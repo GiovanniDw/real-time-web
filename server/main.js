@@ -15,7 +15,18 @@ app.use(express.static('public'));
 app.get('/hello', (req, res) => {
   res.send('Hello Vite!');
 });
+io.on("connection", (socket) => {
+  console.log(socket.id);
 
+  socket.on("send-message", (msg) => {
+    console.log(msg);
+    socket.broadcast.emit("receive-message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 ViteExpress.bind(app, server);
 
