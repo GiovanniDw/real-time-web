@@ -1,0 +1,7 @@
+{
+  "server/server.js": {
+    "file": "server.mjs",
+    "isEntry": true,
+    "src": "server/server.js"
+  }
+}

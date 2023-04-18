@@ -1,0 +1,21 @@
+{
+  "index.css": {
+    "file": "public/index-a910be10.css",
+    "src": "index.css"
+  },
+  "index.html": {
+    "assets": [
+      "public/javascript-8dac5379.svg"
+    ],
+    "css": [
+      "public/index-a910be10.css"
+    ],
+    "file": "public/index-eebee580.js",
+    "isEntry": true,
+    "src": "index.html"
+  },
+  "src/javascript.svg": {
+    "file": "public/javascript-8dac5379.svg",
+    "src": "src/javascript.svg"
+  }
+}

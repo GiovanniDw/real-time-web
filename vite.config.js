@@ -9,7 +9,7 @@ import path from 'path';
 export default defineConfig({
   appType: 'spa',
   base: "./",
-  plugins: [commonjs(),],
+  plugins: [],
   optimizeDeps: {exclude: ["fsevents"]},
   publicDir: '/public',
   css: {
@@ -37,11 +37,16 @@ export default defineConfig({
     outDir: 'docs',
     sourcemap: true,
     manifest: true,
-    ssrManifest: true,
-    ssr: './server/main.js',
+    assetsDir: './public',
+    ssrManifest: false,
     minify: false,
     input: "/index.html"
-  }
+  },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
 },({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.

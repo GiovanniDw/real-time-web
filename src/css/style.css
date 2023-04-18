@@ -1,0 +1,117 @@
+:root {
+  --color-white: #fff;
+  --color-light-gray:
+    --color-dark: #111;
+  --font-size: 1em;
+  --color-bg-message: linear-gradient(180deg, rgba(236, 241, 255, 1) 0%, rgba(203, 212, 230, 1) 100%);
+  --color-bg-my-message: linear-gradient(0deg, rgb(210, 215, 230) 0%, rgb(184, 195, 218) 100%);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+
+body {
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  /* max-width: 100vw; */
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  top: 0;
+  width: 100%;
+  height: auto;
+  padding: 1em;
+  position: sticky;
+  z-index: 999;
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+
+}
+
+input {
+  padding: 1em;
+
+  /* border-radius: 100%; */
+  border: 1px solid black;
+  width: 100%;
+  /* width: 100%; */
+
+}
+
+input[type="text"] {}
+
+main {
+  top: 0;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  padding-bottom: 5em;
+}
+
+#form {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 1em;
+}
+
+.message-container {
+  margin: 1em;
+  display: flex;
+
+
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: auto;
+}
+
+ul.message-list {
+  list-style-type: none;
+  width: 100%;
+}
+
+.message {
+  border-radius: .5em;
+  background: gray;
+  padding: .5em 1em;
+  min-width: 3em;
+  margin-bottom: 1em;
+  background: var(--color-bg-message);
+  max-width: 90%;
+  appearance: none;
+}
+
+.message.my-message {
+  align-self: flex-end;
+  background: var(--color-bg-my-message);
+}
+
+
+
+
+.message::marker {}
+
+
+#loginBtn {
+  align-self: flex-end;
+  appearance: none;
+  border: 0;
+  padding: 1em;
+}
