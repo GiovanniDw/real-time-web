@@ -1,4 +1,3 @@
-//@ts-check
 const express = require('express');
 const ViteExpress = require('vite-express');
 const cors = require('cors');
@@ -8,8 +7,6 @@ const socket = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
-
-
 
 const CorsOptions = {
   origin: "http://localhost:5173",
