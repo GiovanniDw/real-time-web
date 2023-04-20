@@ -6,7 +6,7 @@ export const modalTemplate = () => html`
       <div class="modal-content">
         <span class="close">&times;</span>
         <div>
-          <form action="/login">
+          <form id="login-form">
           <label for='username'>Login</label>
           <input
             type="text"
@@ -22,4 +22,4 @@ export const modalTemplate = () => html`
 
 // export const modal = document.getElementById("loginModal");
 
-  export const LoginModal = (element, before) => render(modalTemplate(), element, {before});
+export const LoginModal = (element, before) => render(modalTemplate(), element, {before});

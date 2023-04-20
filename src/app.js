@@ -1,5 +1,7 @@
 import '@/css/style.css';
 import { html, render } from 'lit-html';
+// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { $, $$, app } from '@/helpers/variables';
 // import * as io from "socket.io";
 // import { setupCounter } from "./counter.js";
@@ -7,14 +9,16 @@ import javascriptLogo from './javascript.svg';
 import { LoginModal, modalTemplate } from '@/components/modal';
 import { headerTemplate, renderHeader } from '@/components/Header';
 
+
+
+
 const template = () => html`
   ${headerTemplate()}
-  <img src="${javascriptLogo}" />
   <main>
     <div class="message-container">
       <ul class="message-list"></ul>
     </div>
-    <form id="form">
+    <form id="message-form">
       <input id="message-input" placeholder="your message" type="text" />
     </form>
   </main>
@@ -29,26 +33,34 @@ const header = document.querySelector('header');
 
 const renderBeforeFooter = app.querySelector('footer');
 const renderBeforeMain = app.querySelector('main');
-
+console.log(renderBeforeFooter)
 app.addEventListener('DOMContentLoaded', () => {});
 
 //
 
 // setupCounter(document.querySelector("#counter"));
 
-let socket = io();
+const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3000";
+console.log(URL)
+export const socket = io(URL, {
+  // withCredentials: false,
+  autoConnect: true,
+  cors: "*"
+});
 
-const form = $('#form');
+const messageForm = $('#message-form');
 const ul = $('.message-list');
 const input = $('#message-input');
-
+const loginInput = $('#username');
+const loginForm = $('#login-form')
 const btn = $('#loginBtn');
 const modal = $('#loginModal');
 // LoginModal(btn, modal);
-form.addEventListener('submit', function (e) {
+
+messageForm.addEventListener('submit', function (e) {
   e.preventDefault();
   if (input.value) {
-    console.log(socket.id);
+    console.log(socket.userID);
     socket.emit('send-message', input.value);
     const item = document.createElement('li');
     item.textContent = input.value;
@@ -59,8 +71,25 @@ form.addEventListener('submit', function (e) {
     input.value = '';
   }
 });
+// let usernameAlreadySelected = false;
+loginForm.addEventListener('submit', function (e) {
+  
+  e.preventDefault();
+  if (loginInput.value) {
+    let nickname = loginInput.value;
+    console.log(socket.auth);
+    socket.emit('send-nickname', nickname);
+    socket.auth = {nickname}
+    console.log(socket.auth)
 
-
+    input.value = '';
+  }
+});
+// const onUsernameSelection = (username) => {
+//   usernameAlreadySelected = true;
+//   socket.auth = { username };
+//   socket.connect();
+// }
 const span = $('.close');
 
 // When the user clicks the button, open the modal
@@ -82,9 +111,17 @@ window.onclick = function (event) {
 
 
 
-socket.on('connect', () => {
-  console.log(socket.id);
+// socket.onAny((event, ...args) => {
+//   console.log(event, args);
+// });
+
+
+socket.on('connect', (socket) => {
+  console.log(socket.auth);
+  
 });
+
+
 
 socket.on('receive-message', function (msg) {
   console.log(socket.id);

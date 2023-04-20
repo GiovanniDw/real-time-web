@@ -9,7 +9,7 @@ import path from 'path';
 export default defineConfig({
   appType: 'spa',
   base: "./",
-  plugins: [],
+  plugins: [commonjs(),],
   optimizeDeps: {exclude: ["fsevents"]},
   publicDir: '/public',
   css: {
@@ -17,30 +17,18 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    origin: 'http://127.0.0.1:3000',
+    origin: 'http://localhost:3000',
     proxy: {
       // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:5174/socket.io
       '/socket.io': {
-        target: 'ws://localhost:5173',
-        ws: true,
+        target: 'http://localhost:3000',
+        ws: false,
       },
     },
     hmr: true
   },
-  preview: {
-    port: 8080,
-  },
   hmr: {
     clientPort: 5173
-  },
-  build: {
-    outDir: 'docs',
-    sourcemap: true,
-    manifest: true,
-    assetsDir: './public',
-    ssrManifest: false,
-    minify: false,
-    input: "/index.html"
   },
   resolve: {
     alias: {
