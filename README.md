@@ -74,16 +74,17 @@ Goal: Build and deploy a simple but unique real-time app
 **Day assignment:** [(assignment)](./course/week-1.md#assignment-1-make-it-so) Make it so *(as a team)*: Implement (code/style/discuss/deploy) basic chat (or other realtime) functionality on your teampage!
 
 #### Tuesday 18 April
-**Talk subjects:** My first realtime web app! [(slides)]() Short recap, (local) data management, using (wire) flows for realtime web apps.\
+**Talk subjects:** My first realtime web app! [(slides)](https://docs.google.com/presentation/d/18eftO3epzIXDjdwl3cn5Wq99fkQYCUnExUqq9P72A3k) Short recap, (local) data management, using (wire) flows for realtime web apps.\
 **Day assignment:** [(assignment)](./course/week-1.md#assignment-2-make-it-so) Make it so *(individually)*. i) Create (code/style/discuss/deploy) a chat app (or other realtime functionality) based on the examples and ii) add your own unique feature!
 
 #### Friday 21 april
 
-Friday afternoon we will have a [peer review session](./course/peer-review.md). You will read, comment and fire issues on each others code. Doing this is really good for your programming insight and helps others refining/refactoring their code.
+Friday ~~afternoon~~ morning we will have a [peer review session](./course/peer-review.md). You will read, comment and fire issues on each others code. Doing this is really good for your programming insight and helps others refining/refactoring their code.
 
 | Time | Who | Activity |
 |:--|:--|:--|
-| 14:00 | Tribe *+(Shyanta \|\| Justus)* | Peer review |
+| 9:30 | Tribe *+(Shyanta \|\| Justus)* | Peer review |
+| 11:00 | Tribe *+(Shyanta \|\| Justus)* | Afronding Peer review |
 
 ### Week 2 - Sockets and data
 Goal: Store, manipulate and share data between server-client   
