@@ -7,11 +7,13 @@ module.exports = {
     'eslint:recommended',
   ],
   parserOptions: {
-    ecmaVersion: 'latest'
+    allowImportExportEverywhere: true,
+    ecmaVersion: 'latest',
+    sourceType: "module"
   },
   env: {
     node: true,
     browser: true,
     es6: true
-  }
+  },
 }

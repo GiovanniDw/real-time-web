@@ -2,14 +2,12 @@ import { defineConfig, loadEnv, createLogger, searchForWorkspaceRoot } from 'vit
 import {fileURLToPath} from 'url';
 import commonjs from '@rollup/plugin-commonjs';
 import path from 'path';
-
-
-
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
-  appType: 'spa',
+  appType: 'mpa',
   base: "./",
-  plugins: [commonjs(),],
+  plugins: [commonjs()],
   optimizeDeps: {exclude: ["fsevents"]},
   publicDir: '/public',
   css: {
@@ -25,7 +23,7 @@ export default defineConfig({
         ws: false,
       },
     },
-    hmr: true
+    hmr: true,
   },
   hmr: {
     clientPort: 5173
@@ -34,7 +32,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-  },
+  }
 },({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
@@ -46,4 +44,3 @@ export default defineConfig({
     },
   }
 })
-

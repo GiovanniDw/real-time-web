@@ -1,90 +1,114 @@
 import '@/css/style.css';
 import { html, render } from 'lit-html';
 // import { io } from "socket.io-client";
-import { io } from "socket.io-client";
+
 import { $, $$, app } from '@/helpers/variables';
-// import * as io from "socket.io";
-// import { setupCounter } from "./counter.js";
+
 import javascriptLogo from './javascript.svg';
-import { LoginModal, modalTemplate } from '@/components/modal';
-import { headerTemplate, renderHeader } from '@/components/Header';
+
+import { renderHeader, header } from '@/components/Header';
+import ChatComponent, { renderChat } from '@/components/Chat.js';
+import HeaderComponent from "@/components/HeaderComponent.js"
+import loginModal, {modalTemplate} from "@/components/modal.js"
+import socket from '@/socket.js';
+// import "@/components/HeaderComponent.js"
+
+
+// const header = document.querySelector('header');
 
 
 
+// const main = app.querySelector('main');
+// render(headerTemplate(), app)
+// const renderHome = (app) => {
 
-const template = () => html`
-  ${headerTemplate()}
-  <main>
-    <div class="message-container">
-      <ul class="message-list"></ul>
-    </div>
-    <form id="message-form">
-      <input id="message-input" placeholder="your message" type="text" />
-    </form>
-  </main>
-  ${modalTemplate()}
+  const template = /*html*/`
+<header-component></header-component>
+<main>
+  <chat-component></chat-component>
+</main>
   <footer></footer>
+  <login-modal></login-modal>
 `;
 
-render(template(), app);
+app.insertAdjacentHTML('afterbegin', template)  
 
-// renderHeader(app, renderBeforeMain);
-const header = document.querySelector('header');
-
+// render(template, app)
+// renderChat(main, socket);
+const main = app.querySelector('main');
 const renderBeforeFooter = app.querySelector('footer');
-const renderBeforeMain = app.querySelector('main');
-console.log(renderBeforeFooter)
-app.addEventListener('DOMContentLoaded', () => {});
+
+// render(chatTemplate(), main)
+
+
+// renderHeader(app);
+// renderChat(app, socket);
+
+
+
+// console.log(renderBeforeFooter)
+app.addEventListener('DOMContentLoaded', () => {
+
+
+
+
+
+
+});
 
 //
 
 // setupCounter(document.querySelector("#counter"));
 
-const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3000";
+
 console.log(URL)
-export const socket = io(URL, {
-  // withCredentials: false,
-  autoConnect: true,
-  cors: "*"
-});
+
+
+
+if ('customElements' in window) {
+  customElements.define('header-component', HeaderComponent);
+  customElements.define('chat-component', ChatComponent);
+  customElements.define('login-modal', loginModal);
+}
+
+
 
 const messageForm = $('#message-form');
 const ul = $('.message-list');
 const input = $('#message-input');
 const loginInput = $('#username');
 const loginForm = $('#login-form')
+// const btn = $('header-component').shadowRoot.querySelector('#loginBtn');
 const btn = $('#loginBtn');
 const modal = $('#loginModal');
 // LoginModal(btn, modal);
 
-messageForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  if (input.value) {
-    console.log(socket.userID);
-    socket.emit('send-message', input.value);
-    const item = document.createElement('li');
-    item.textContent = input.value;
-    item.setAttribute('class', 'message my-message');
-    ul.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+// messageForm.addEventListener('submit', function (e) {
+//   e.preventDefault();
+//   if (input.value) {
+//     console.log(socket.userID);
+//     socket.emit('send-message', input.value);
+//     const item = document.createElement('li');
+//     item.textContent = input.value;
+//     item.setAttribute('class', 'message my-message');
+//     ul.appendChild(item);
+//     window.scrollTo(0, document.body.scrollHeight);
 
-    input.value = '';
-  }
-});
+//     input.value = '';
+//   }
+// });
 // let usernameAlreadySelected = false;
-loginForm.addEventListener('submit', function (e) {
-  
-  e.preventDefault();
-  if (loginInput.value) {
-    let nickname = loginInput.value;
-    console.log(socket.auth);
-    socket.emit('send-nickname', nickname);
-    socket.auth = {nickname}
-    console.log(socket.auth)
+// loginForm.addEventListener('submit', function (e) {
+//   e.preventDefault();
+//   if (loginInput.value) {
+//     let username = loginInput.value;
+//     console.log(username);
+//     socket.emit('set-username', username);
+//     socket.auth = {username}
 
-    input.value = '';
-  }
-});
+//     loginInput.value = username;
+//   }
+// });
 // const onUsernameSelection = (username) => {
 //   usernameAlreadySelected = true;
 //   socket.auth = { username };
@@ -98,6 +122,8 @@ btn.onclick = function () {
 };
 
 // When the user clicks on <span> (x), close the modal
+
+
 span.onclick = function () {
   modal.style.display = 'none';
 };
@@ -111,20 +137,20 @@ window.onclick = function (event) {
 
 
 
-// socket.onAny((event, ...args) => {
-//   console.log(event, args);
-// });
+socket.onAny((event, ...args) => {
+  console.log(event, args);
+});
+
 
 
 socket.on('connect', (socket) => {
-  console.log(socket.auth);
+  // console.log(socket.id);
   
 });
 
 
 
 socket.on('receive-message', function (msg) {
-  console.log(socket.id);
   const item = document.createElement('li');
   item.textContent = msg;
   item.setAttribute('class', 'message');

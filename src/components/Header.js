@@ -7,10 +7,26 @@ export const headerTemplate = () => html`
   </header>
 `;
 
-export const renderHeader = (element, before) => {
-  render(headerTemplate(), element, { before });
 
+export const renderHeader = (element) => {
+
+  return () => html`
+  <header>
+    <button id="loginBtn">Login</button>
+  </header>
+`;
 }
+
+export const header = () => {
+  
+  const html = /*html*/`
+  <header>
+    <button id="loginBtn">Login</button>
+  </header>
+`
+return html
+
+};
 
 
 export const LoginModal = (btn, modal) => {
@@ -23,6 +39,9 @@ export const LoginModal = (btn, modal) => {
 
   
 }
+
+
+
 
 
 
