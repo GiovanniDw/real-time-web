@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server/server.js -w server/",
     "start": "NODE_ENV=production node server/server.js",
-    "build": "yarn build:server && yarn build:client",
+    "build": "npm run build:server && npm run build:client",
     "preview": "vite preview",
     "build:client": "vite build --outDir docs/client",
     "build:server": "vite build --outDir docs/server --ssr server/server.js",

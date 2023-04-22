@@ -1,3 +1,5 @@
+import { $ } from '@/helpers/variables.js';
+import socket from '@/socket.js';
 class HeaderComponent extends HTMLElement {
   constructor() {
     // Always call super first in constructor
@@ -5,9 +7,23 @@ class HeaderComponent extends HTMLElement {
 
     console.log('Constructed', this);
     this.innerHTML = /*html*/ `
-          <header>
-            <button id="loginBtn">Login</button>
-          </header>
+<header>
+  <div>
+    <button id="loginBtn">Login</button>
+    <div id="loginModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div>
+          <form id="login-form" action="login">
+            <label for="username">Login</label>
+            <input type="text" name="username" id="username" placeholder="username" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
     `;
   }
 
@@ -16,6 +32,39 @@ class HeaderComponent extends HTMLElement {
    */
   connectedCallback() {
     console.log('connected!', this);
+    const btn = this.querySelector('#loginBtn');
+    const form = this.querySelector('#login-form');
+    const span = this.querySelector('.close');
+    const modal = this.querySelector('#loginModal');
+    const input = $('#username');
+    const ul = $('.message-list');
+    btn.onclick = function () {
+      modal.style.display = 'block';
+    };
+
+    span.onclick = function () {
+      modal.style.display = 'none';
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('set-username', input.value);
+        const item = document.createElement('li');
+        item.textContent = input.value;
+        item.setAttribute('class', 'message my-message');
+        ul.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+        input.value = '';
+      }
+    });
   }
 
   /**
@@ -30,5 +79,4 @@ class HeaderComponent extends HTMLElement {
 //   customElements.define('header-com', HeaderComponent);
 // }
 
-
-export default HeaderComponent
+export default HeaderComponent;

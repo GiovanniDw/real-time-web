@@ -1,9 +1,13 @@
 :root {
   --color-white: #fff;
-  --color-light-gray:
-    --color-dark: #111;
+  --color-light-gray: gray;
+  --color-dark: #111;
   --font-size: 1em;
-  --color-bg-message: linear-gradient(180deg, rgba(236, 241, 255, 1) 0%, rgba(203, 212, 230, 1) 100%);
+  --color-bg-message: linear-gradient(
+    180deg,
+    rgba(236, 241, 255, 1) 0%,
+    rgba(203, 212, 230, 1) 100%
+  );
   --color-bg-my-message: linear-gradient(0deg, rgb(210, 215, 230) 0%, rgb(184, 195, 218) 100%);
 }
 
@@ -12,7 +16,6 @@
   padding: 0;
   margin: 0;
 }
-
 
 body {
   font-size: 16px;
@@ -37,8 +40,6 @@ header {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-
 }
 
 input {
@@ -48,10 +49,10 @@ input {
   border: 1px solid black;
   width: 100%;
   /* width: 100%; */
-
 }
 
-input[type="text"] {}
+input[type='text'] {
+}
 
 main {
   top: 0;
@@ -71,8 +72,6 @@ main {
 .message-container {
   margin: 1em;
   display: flex;
-
-
 }
 
 .message-list {
@@ -88,9 +87,9 @@ ul.message-list {
 }
 
 .message {
-  border-radius: .5em;
+  border-radius: 0.5em;
   background: gray;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   min-width: 3em;
   margin-bottom: 1em;
   background: var(--color-bg-message);
@@ -103,11 +102,8 @@ ul.message-list {
   background: var(--color-bg-my-message);
 }
 
-
-
-
-.message::marker {}
-
+.message::marker {
+}
 
 #loginBtn {
   align-self: flex-end;
