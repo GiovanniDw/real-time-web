@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // const express = require('express');
 // const ViteExpress = require('vite-express');
 // const cors = require('cors');
@@ -10,6 +11,12 @@ import http from 'http';
 import {Server} from 'socket.io';
 import dotenv from 'dotenv';
 import multer from 'multer';
+import mongoose from 'mongoose';
+import {register, login, logout} from './controllers/authController.js';
+import User from './models/User.js';
+import Room from './models/Room.js';
+import Message from './models/Message.js';
+import {addUser, getUser, removeUser} from './utils.js';
 const upload = multer();
 dotenv.config();
 
@@ -27,12 +34,7 @@ const CorsOptions = {
   // optionsSuccessStatus: 204 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-
-app.use(cors(CorsOptions));
-
-app.options('*', cors(CorsOptions));
-
-
+mongoose.connect(process.env.MONGO_DB, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
 
 const server = http.createServer(app).listen(PORT, () => {
   console.log(`Server is listeningon ${PORT}!`);
@@ -41,10 +43,20 @@ const server = http.createServer(app).listen(PORT, () => {
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
+    methods: ["GET", "POST"]
   },
 });
 
+
+
+app.use(cors(CorsOptions));
+app.options('*', cors(CorsOptions));
+app.use(express.json());
 app.use(express.static('public'));
+
+app.post('/login', login);
+app.post('/register', register);
+app.get('/logout', logout);
 
 app.get('/hello', (req, res) => {
   res.send('Hello Vite!');
@@ -80,6 +92,17 @@ app.get('/hello', (req, res) => {
 io.on('connection', (socket) => {
   console.log('user connected');
   console.log(socket.id);
+
+
+  Room.find().then(result => {
+    socket.emit('output-rooms', result)
+})
+socket.on('create-room', name => {
+    const room = new Room({ name });
+    room.save().then(result => {
+        io.emit('room-created', result)
+    })
+})
 
   //   socket.emit("session", {
   //     sessionID: socket.sessionID,

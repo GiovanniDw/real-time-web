@@ -4,9 +4,9 @@ import { html, render } from 'lit-html';
 
 import { $, $$, app } from '@/helpers/variables';
 
-import { renderHeader, header } from '@/components/Header';
-import ChatComponent, { renderChat } from '@/components/Chat.js';
-import HeaderComponent from '@/components/HeaderComponent.js';
+// import { renderHeader, header } from '@/components/Header.js';
+import ChatComponent from '@/components/Chat.js';
+import Header from '@/components/Header.js';
 import loginModal, { modalTemplate } from '@/components/modal.js';
 import socket from '@/socket.js';
 import { receiveMessage } from './components/sockets/receiceMessage';
@@ -33,7 +33,7 @@ import { receiveMessage } from './components/sockets/receiceMessage';
 //https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
   return /*html*/ `
-  <header is="header-component"></header>
+  <header-component></header-component>
     <chat-component></chat-component>
 <footer></footer>
   `;
@@ -61,16 +61,11 @@ app.addEventListener('DOMContentLoaded', () => {});
 console.log(URL);
 
 if ('customElements' in window) {
-  customElements.define('header-component', HeaderComponent, {extends: "header"});
+  customElements.define('header-component', Header);
   customElements.define('chat-component', ChatComponent);
   customElements.define('login-modal', loginModal);
 }
 
-const messageForm = $('#message-form');
-const ul = $('.message-list');
-const input = $('#message-input');
-const loginInput = $('#username');
-const loginForm = $('#login-form');
 // const btn = $('header-component').shadowRoot.querySelector('#loginBtn');
 
 // LoginModal(btn, modal);
@@ -128,7 +123,7 @@ socket.onAny((event, ...args) => {
 });
 
 socket.on('connect', (socket) => {
-  // console.log(socket.id);
+  console.log(socket);
 });
 
 // socket.on('receive-message', function (msg) {

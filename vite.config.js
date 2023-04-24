@@ -8,7 +8,7 @@ export default defineConfig({
   appType: 'mpa',
   base: "./",
   plugins: [commonjs()],
-  optimizeDeps: {exclude: ["fsevents"]},
+  optimizeDeps: {},
   publicDir: '/public',
   css: {
     devSourcemap: true

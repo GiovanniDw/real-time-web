@@ -36,6 +36,7 @@ class ChatComponent extends HTMLElement {
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
+        console.log(input.value)
         socket.emit('send-message', input.value);
         const item = document.createElement('li');
         item.textContent = input.value;
