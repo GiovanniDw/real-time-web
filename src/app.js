@@ -1,10 +1,8 @@
-import '@/css/style.css';
+import '@/css/main.css';
 import { html, render } from 'lit-html';
 // import { io } from "socket.io-client";
 
 import { $, $$, app } from '@/helpers/variables';
-
-import javascriptLogo from './javascript.svg';
 
 import { renderHeader, header } from '@/components/Header';
 import ChatComponent, { renderChat } from '@/components/Chat.js';
@@ -32,15 +30,12 @@ import { receiveMessage } from './components/sockets/receiceMessage';
 // }
 
 // app.innerHTML() = _App();
-
+//https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
   return /*html*/ `
-  <header-component></header-component>
-  <main>
+  <header is="header-component"></header>
     <chat-component></chat-component>
-  </main>
 <footer></footer>
-
   `;
 };
 
@@ -66,7 +61,7 @@ app.addEventListener('DOMContentLoaded', () => {});
 console.log(URL);
 
 if ('customElements' in window) {
-  customElements.define('header-component', HeaderComponent);
+  customElements.define('header-component', HeaderComponent, {extends: "header"});
   customElements.define('chat-component', ChatComponent);
   customElements.define('login-modal', loginModal);
 }

@@ -9,7 +9,8 @@ import http from 'http';
 // const socket = require('socket.io');
 import {Server} from 'socket.io';
 import dotenv from 'dotenv';
-
+import multer from 'multer';
+const upload = multer();
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -26,13 +27,16 @@ const CorsOptions = {
   // optionsSuccessStatus: 204 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-const server = http.createServer(app).listen(PORT, () => {
-  console.log(`Server is listeningon ${PORT}!`);
-});
 
 app.use(cors(CorsOptions));
 
 app.options('*', cors(CorsOptions));
+
+
+
+const server = http.createServer(app).listen(PORT, () => {
+  console.log(`Server is listeningon ${PORT}!`);
+});
 
 const io = new Server(server, {
   cors: {

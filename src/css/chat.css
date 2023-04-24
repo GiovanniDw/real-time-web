@@ -1,0 +1,43 @@
+
+#message-form {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 1em;
+}
+
+.message-container {
+  margin: 1em;
+  display: flex;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: auto;
+}
+
+ul.message-list {
+  list-style-type: none;
+  width: 100%;
+}
+
+.message {
+  border-radius: 0.5em;
+  background: gray;
+  padding: 0.5em 1em;
+  min-width: 3em;
+  margin-bottom: 1em;
+  background: var(--color-bg-message);
+  max-width: 90%;
+  appearance: none;
+}
+
+.message.my-message {
+  align-self: flex-end;
+  background: var(--color-bg-my-message);
+}
+
+.message::marker {
+}

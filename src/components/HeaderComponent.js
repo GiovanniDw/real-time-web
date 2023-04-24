@@ -1,29 +1,30 @@
-import { $ } from '@/helpers/variables.js';
+import { $ , $this } from '@/helpers/variables.js';
 import socket from '@/socket.js';
 class HeaderComponent extends HTMLElement {
   constructor() {
     // Always call super first in constructor
     super();
-
+    
     console.log('Constructed', this);
     this.innerHTML = /*html*/ `
-<header>
-  <div>
-    <button id="loginBtn">Login</button>
-    <div id="loginModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <div>
-          <form id="login-form" action="login">
-            <label for="username">Login</label>
-            <input type="text" name="username" id="username" placeholder="username" />
-          </form>
-        </div>
+<div>
+  <button id="loginBtn">Login</button>
+  <div id="loginModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div>
+        <form id="login-form" action="login">
+        <h3>Login</h3>
+          <label for="username">username</label>
+          <input type="text" name="username" id="username" placeholder="username" />
+          <label for="email">email</label>
+          <input type="email" name="email" id="email" placeholder="jhon@do.com" />
+        </form>
       </div>
     </div>
   </div>
-</header>
+</div>
     `;
   }
 
@@ -31,6 +32,7 @@ class HeaderComponent extends HTMLElement {
    * Runs each time the element is appended to or moved in the DOM
    */
   connectedCallback() {
+    console.log()
     console.log('connected!', this);
     const btn = this.querySelector('#loginBtn');
     const form = this.querySelector('#login-form');
@@ -41,6 +43,16 @@ class HeaderComponent extends HTMLElement {
     btn.onclick = function () {
       modal.style.display = 'block';
     };
+
+    const user = false;
+
+
+    if (!user) {
+    modal.style.display = 'block'  
+    }
+
+
+
 
     span.onclick = function () {
       modal.style.display = 'none';

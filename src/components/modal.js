@@ -39,6 +39,13 @@ class loginModal extends HTMLElement {
         <input type="text" name="username" id="username" placeholder="username" />
       </form>
     </div>
+    <div>
+      <form id="login-form" action="register">
+        <label for="username">Register</label>
+        <input type="email" name="email" id="email" placeholder="jhon@do.com" />
+        <input type="text" name="username" id="username" placeholder="username" />
+      </form>
+    </div>
   </div>
 </div>
     `;

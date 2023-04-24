@@ -1,6 +1,7 @@
 import { html, render } from 'lit-html';
 import { $, $$ } from '@/helpers/variables';
 import { LoginModal, modalTemplate } from '@/components/modal';
+import "@/css/chat.css"
 import socket from '@/socket.js';
 // import { socket } from '../app.js';
 
@@ -11,6 +12,8 @@ class ChatComponent extends HTMLElement {
 
     console.log('Constructed', this);
     this.innerHTML = /*html*/ `
+      <div className="message-groups">
+      </div>
       <div class="message-container">
         <ul class="message-list"></ul>
       </div>
@@ -28,7 +31,7 @@ class ChatComponent extends HTMLElement {
 
     const input = $('#message-input');
     const messageForm = $('#message-form');
-    const ul = $('.message-list');
+    const messageList = $('.message-list');
 
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -37,7 +40,7 @@ class ChatComponent extends HTMLElement {
         const item = document.createElement('li');
         item.textContent = input.value;
         item.setAttribute('class', 'message my-message');
-        ul.appendChild(item);
+        messageList.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
         input.value = '';
       }
