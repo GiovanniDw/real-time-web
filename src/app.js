@@ -35,14 +35,24 @@ const {token} = sessionStorage;
 //https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
   return /*html*/`
-<header-component id="header"></header-component>
+<header-component data-user="false" id="header"></header-component>
 <chat-component class="chat-container"></chat-component>
+<button id='fakeButton'></button>
   `;
+};
+
+App.state = {
+  loggedIn: 0,
 };
 
 
 
+
 app.innerHTML = App();
+
+
+  
+
 
 // render(template, app)
 // renderChat(main, socket);
@@ -144,7 +154,6 @@ socket.on('connect', (socket) => {
 
 app.addEventListener('DOMContentLoaded', () => {
 
-  
 });
 
 

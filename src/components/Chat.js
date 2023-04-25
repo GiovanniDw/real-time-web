@@ -17,8 +17,9 @@ class ChatComponent extends HTMLElement {
         <h2>Rooms</h2>
         <form id="create-room-form" action="">
           <p>Create A room</p>
-          <label for="room-name">Room Name</label>
-          <input id="room-name" type="text" placeholder="room name" />
+          <label for="new-room-name">Room Name</label>
+          <input id="new-room-name" type="text" placeholder="room name" />
+          <input type='submit'>
         </form>
       </div>
       <div class="message-container">
@@ -56,6 +57,17 @@ class ChatComponent extends HTMLElement {
         input.value = '';
       }
     });
+
+    const createRoomForm = this.querySelector('#create-room-form');
+    const newRoomName = this.querySelector('#new-room-name');
+    
+    createRoomForm.addEventListener('submit', function(e) {
+      if (newRoomName.value) {
+        socket.emit('create-room', newRoomName.value)
+        
+      }
+    })
+
   }
 
   /**

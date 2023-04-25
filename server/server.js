@@ -39,11 +39,11 @@ const CorsOptions = {
   // optionsSuccessStatus: 204 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-// const sessionMiddleware = session({
-//   secret: process.env.SESSION_SECRET,
-//   resave: false,
-//   saveUninitialized: false,
-// });
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+});
 const createJWT = (id) => {
   return jwt.sign({ id }, 'chatroom secret', {
     expiresIn: maxAge, // in token expiration, calculate by second
@@ -62,7 +62,7 @@ const io = new Server(server, {
 });
 
 app.use(cors(CorsOptions));
-// app.use(sessionMiddleware);
+app.use(sessionMiddleware);
 app.options('*', cors(CorsOptions));
 app.use(express.json());
 app.use(express.static('public'));
@@ -121,6 +121,9 @@ app.get('/hello', (req, res) => {
 
 // config(app, io);
 
+mongoose.connect(process.env.MONGO_DB, { dbName: process.env.DB_NAME,useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
+
+
 io.on('connection', (socket) => {
   // mongoose
   //   .connect(process.env.MONGO_DB, {
@@ -135,9 +138,9 @@ io.on('connection', (socket) => {
   console.log(socket.request.session);
   console.log(socket.id);
 
-  // Room.find().then((result) => {
-  //   socket.emit('output-rooms', result);
-  // });
+  Room.find().then((result) => {
+    socket.emit('output-rooms', result);
+  });
   socket.on('create-room', (name) => {
     const room = new Room({ name });
     room.save().then((result) => {
