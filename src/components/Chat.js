@@ -12,8 +12,9 @@ class ChatComponent extends HTMLElement {
     super();
 
     console.log('Constructed', this);
-    this.innerHTML = /*html*/`
+    this.innerHTML = /*html*/ `
       <div id="message-groups">
+        <div id='rooms-list'></div>
         <h2>Rooms</h2>
         <form id="create-room-form" action="">
           <p>Create A room</p>
@@ -42,7 +43,37 @@ class ChatComponent extends HTMLElement {
     const input = $('#message-input');
     const messageForm = $('#message-form');
     const messageList = $('.message-list');
-    const messageListContainer = $('.message-list-container')
+    const messageListContainer = $('.message-list-container');
+    const roomsList = $('#rooms-list');
+    
+    const createRoomForm = this.querySelector('#create-room-form');
+    const newRoomName = this.querySelector('#new-room-name');
+
+    createRoomForm.addEventListener('submit', function (e) {
+      if (newRoomName.value) {
+        socket.emit('create-room', newRoomName.value);
+      }
+    });
+
+    socket.on('output-rooms', (roomArray) => {
+      console.log(roomArray);
+      roomsList;
+
+      roomArray.forEach(room => {
+        const roomItem = document.createElement('button');
+        roomItem.setAttribute('value', room._id);
+        roomItem.setAttribute('class', 'room-item');
+        roomItem.addEventListener('click', (e) => {
+          console.log(e);
+          console.log(roomItem.value)
+        })
+        roomItem.innerHTML = /*html*/ `
+        ${room.name}
+        `;
+        roomsList.appendChild(roomItem);  
+      });
+      
+    });
 
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -53,22 +84,21 @@ class ChatComponent extends HTMLElement {
         item.textContent = input.value;
         item.setAttribute('class', 'message my-message');
         messageList.appendChild(item);
-        messageListContainer.scrollTo({ top:messageList.scrollHeight, left: 0, behavior: "smooth", });
+        messageListContainer.scrollTo({
+          top: messageList.scrollHeight,
+          left: 0,
+          behavior: 'smooth',
+        });
         input.value = '';
       }
     });
-
-    const createRoomForm = this.querySelector('#create-room-form');
-    const newRoomName = this.querySelector('#new-room-name');
     
-    createRoomForm.addEventListener('submit', function(e) {
-      if (newRoomName.value) {
-        socket.emit('create-room', newRoomName.value)
-        
-      }
-    })
+    
 
   }
+
+  
+
 
   /**
    * Runs when the element is removed from the DOM

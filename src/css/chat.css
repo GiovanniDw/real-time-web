@@ -100,3 +100,10 @@ ul.message-list {
 
 .message::marker {
 }
+
+
+.room-item {
+  appearance: none;
+  width: 100%;
+  padding: 1em;
+}

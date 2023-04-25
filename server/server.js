@@ -14,8 +14,9 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 import * as socketioJwt from 'socketio-jwt';
-import { register, login, logout } from './controllers/authController.js';
+import { register, login, logout, verifyuser } from './controllers/authController.js';
 import User from './models/User.js';
 import Room from './models/Room.js';
 import Message from './models/Message.js';
@@ -62,7 +63,8 @@ const io = new Server(server, {
 });
 
 app.use(cors(CorsOptions));
-app.use(sessionMiddleware);
+// app.use(sessionMiddleware);
+app.use(cookieParser()); 
 app.options('*', cors(CorsOptions));
 app.use(express.json());
 app.use(express.static('public'));
@@ -70,6 +72,7 @@ app.use(express.static('public'));
 app.post('/login', login);
 app.post('/register', register);
 app.get('/logout', logout);
+app.get('/verifyuser', verifyuser);
 
 app.get('/hello', (req, res) => {
   res.send('Hello Vite!');

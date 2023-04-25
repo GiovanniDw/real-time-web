@@ -29,7 +29,7 @@ class Header extends HTMLElement {
 
     console.log('Constructed', this);
     console.log(this.state.user);
-    if (this.state.user) {
+    if (!this.state.user) {
       this.innerHTML = /*html*/ `
       <div>
         <button id="loginBtn">Login</button>
@@ -150,7 +150,7 @@ class Header extends HTMLElement {
           email: emailInput.value,
           password: passwordInput.value,
         };
-        socket.emit('login', user);
+        // socket.emit('login', user);
         console.log(user);
 
         // if(user.email && user.password) {
@@ -158,32 +158,32 @@ class Header extends HTMLElement {
         // }
         
 
-        // try {
-        //   const { name, email, password } = user;
-        //   const res = await fetch('/login', {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //     body: JSON.stringify({ name, email, password }),
-        //     headers: { 'Content-Type': 'application/json' },
-        //   });
-        //   const data = await res.json();
-        //   console.log(data.user);
-        //   if (data.errors) {
-        //     console.log(data.errors.email);
-        //     console.log(data.errors.name);
-        //     console.log(data.errors.password);
-        //     loginError.innerHTML = data.errors;
-        //   }
-        //   if (data.user) {
-        //     this.state.setUser({
-        //       name: data.user.name,
-        //       email: data.user.email,
-        //     });
-        //     console.log(this.state.user);
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
+        try {
+          const { name, email, password } = user;
+          const res = await fetch('/login', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ name, email, password }),
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const data = await res.json();
+          console.log(data.user);
+          if (data.errors) {
+            console.log(data.errors.email);
+            console.log(data.errors.name);
+            console.log(data.errors.password);
+            loginError.innerHTML = data.errors;
+          }
+          if (data.user) {
+            this.state.setUser({
+              name: data.user.name,
+              email: data.user.email,
+            });
+            console.log(this.state.user);
+          }
+        } catch (error) {
+          console.log(error);
+        }
 
         emailInput.value = user.email;
       }
