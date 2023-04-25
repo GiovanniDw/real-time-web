@@ -8,7 +8,7 @@ import { $, $$, app, html } from '@/helpers/variables';
 // import { renderHeader, header } from '@/components/Header.js';
 import ChatComponent from '@/components/Chat.js';
 import Header from '@/components/Header.js';
-import loginModal, { modalTemplate } from '@/components/modal.js';
+// import loginModal, { modalTemplate } from '@/components/modal.js';
 import socket from '@/socket.js';
 import { receiveMessage } from './components/sockets/receiceMessage';
 const {token} = sessionStorage;
@@ -55,7 +55,7 @@ app.innerHTML = App();
 // renderChat(app, socket);
 
 // console.log(renderBeforeFooter)
-app.addEventListener('DOMContentLoaded', () => {});
+
 
 //
 
@@ -66,7 +66,6 @@ console.log(URL);
 if ('customElements' in window) {
   customElements.define('header-component', Header);
   customElements.define('chat-component', ChatComponent);
-  customElements.define('login-modal', loginModal);
 }
 
 // const btn = $('header-component').shadowRoot.querySelector('#loginBtn');
@@ -124,14 +123,14 @@ if ('customElements' in window) {
 socket.onAny((event, ...args) => {
   console.log(event, args);
 });
+socket.on('connect', (socket) => {
 
-// socket.on('connect', (socket) => {
-//   console.log(socket);
-// });
+  console.log('socketconnection');
+});
 
-socket.on('authenticated', function () {
-    //do other things
-  }).emit('authenticate', {token}); //send the jwt
+// socket.on('authenticated', function () {
+//     //do other things
+//   }).emit('authenticate', {token}); //send the jwt
 
 
 // socket.on('receive-message', function (msg) {
@@ -142,10 +141,18 @@ socket.on('authenticated', function () {
 //   window.scrollTo(0, document.body.scrollHeight);
 // });
 
-socket.on('receive-message', receiveMessage);
-// socket.on('login', setUser);
 
+app.addEventListener('DOMContentLoaded', () => {
+
+  
+});
+
+
+socket.on('receive-message', receiveMessage);
 
 // const setUser = (msg) => {
 //   console.log(msg)
 // };
+// socket.on('user', setUser);
+
+

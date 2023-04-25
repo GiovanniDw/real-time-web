@@ -41,6 +41,7 @@ class ChatComponent extends HTMLElement {
     const input = $('#message-input');
     const messageForm = $('#message-form');
     const messageList = $('.message-list');
+    const messageListContainer = $('.message-list-container')
 
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -51,7 +52,7 @@ class ChatComponent extends HTMLElement {
         item.textContent = input.value;
         item.setAttribute('class', 'message my-message');
         messageList.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
+        messageListContainer.scrollTo({ top:messageList.scrollHeight, left: 0, behavior: "smooth", });
         input.value = '';
       }
     });

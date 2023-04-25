@@ -22,9 +22,8 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-
-UserSchema.statics.login = async function (email, password){
-  const user = await this.findOne({email});
+UserSchema.statics.login = async function (username, password){
+  const user = await this.findOne({username});
   if(user){
       const isAuthenticated = await bcrypt.compare(password,user.password);
       if(isAuthenticated){
@@ -39,9 +38,7 @@ UserSchema.statics.login = async function (email, password){
 
 
 
-
-
-UserSchema.plugin(passportLocalMongoose);
-
 const User = mongoose.model('User', UserSchema);
 export default User;
+
+

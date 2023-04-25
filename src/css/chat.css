@@ -1,4 +1,5 @@
 .chat-container {
+  height: auto;
   display: flex;
   max-height: 100%;
   flex-direction: row;
@@ -8,26 +9,40 @@
   align-content: stretch;
   top: 0;
   position: relative;
+  flex-grow: 1;
+  min-height: 0;
   /* justify-content: space-between; */
 }
+
+.chat-container div {
+  min-height: 0;
+  min-height: 0;
+}
+
 #message-groups {
   padding: 1em;
-  flex-grow: 1;
+  flex-grow: 0;
 }
 
 #message-form {
   width: 100%;
-  position: relative;
+  /* position: relative; */
   bottom: 0;
   padding: 1em;
+  min-height: 0;
   left: 0;
   /* align-self: flex-end; */
 }
-
+.message-list {
+overflow: scroll;
+}
 .message-container {
+  min-height: 0;
   padding: 1em;
-  flex-grow: 4;
-  overflow: hidden;
+  flex-grow: 2;
+  overflow: scroll;
+  min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   /* margin: 1em; */
@@ -44,9 +59,9 @@
   align-self: stretch;
   /* flex: 1 1 auto; */
   /* min-height: 10em; */
-  /* height: 100cqh; */
+  height: 100cqh;
   max-height: 100cqh;
-  overflow-y: auto;
+  overflow-y: scroll;
   /* flex-grow: 1; */
 }
 
@@ -61,19 +76,21 @@ ul.message-list {
   list-style-type: none;
   width: 100%;
   /* margin-bottom: 80px; */
-  overflow-x: hidden; /* Hide horizontal scrollbar */
-  overflow-y: scroll;
+  overflow: hidden; /* Hide horizontal scrollbar */
+  /* overflow-y: scroll; */
 }
 
 .message {
   border-radius: 0.5em;
   background: gray;
   padding: 0.5em 1em;
-  min-width: 3em;
-  padding-bottom: 1em;
+  min-width: 5em;
+
+  margin-bottom: 1em;
   background: var(--color-bg-message);
-  max-width: 90%;
+  /* max-width: 90%; */
   appearance: none;
+  align-self: flex-start;
 }
 
 .message.my-message {

@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-
+import socketjwt from 'socketio-jwt';
 const maxAge = 24 * 60 * 60;
 
 const createJWT = id => {
@@ -56,7 +56,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-      const user = await User.login(email, password );
+      const user = await User.login(email, password);
       const token = createJWT(user._id);
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
       res.status(201).json({ user });

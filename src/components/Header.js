@@ -54,10 +54,10 @@ class Header extends HTMLElement {
                 <form id="register-form" action="/register">
                   <h3>Register</h3>
                   <div id='register-error'></div>
-                  <label for="name">username</label>
-                  <input type="text" name="name" id="name" placeholder="username" autocomplete="nickname" />
                   <label for="new-email">email</label>
                   <input type="email" name="email" id="new-email" placeholder="jhon@do.com" autocomplete="email" />
+                  <label for="name">username</label>
+                  <input type="text" name="name" id="name" placeholder="username" autocomplete="nickname" />
                   <label for="new-password">password</label>
                   <input type="password" name="password" id="new-password" placeholder="****" autocomplete="new-password" />
                   <input type="submit" />
@@ -158,32 +158,32 @@ class Header extends HTMLElement {
         // }
         
 
-        try {
-          const { name, email, password } = user;
-          const res = await fetch('/login', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({ name, email, password }),
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const data = await res.json();
-          console.log(data.user);
-          if (data.errors) {
-            console.log(data.errors.email);
-            console.log(data.errors.name);
-            console.log(data.errors.password);
-            loginError.innerHTML = data.errors;
-          }
-          if (data.user) {
-            this.state.setUser({
-              name: data.user.name,
-              email: data.user.email,
-            });
-            console.log(this.state.user);
-          }
-        } catch (error) {
-          console.log(error);
-        }
+        // try {
+        //   const { name, email, password } = user;
+        //   const res = await fetch('/login', {
+        //     method: 'POST',
+        //     credentials: 'include',
+        //     body: JSON.stringify({ name, email, password }),
+        //     headers: { 'Content-Type': 'application/json' },
+        //   });
+        //   const data = await res.json();
+        //   console.log(data.user);
+        //   if (data.errors) {
+        //     console.log(data.errors.email);
+        //     console.log(data.errors.name);
+        //     console.log(data.errors.password);
+        //     loginError.innerHTML = data.errors;
+        //   }
+        //   if (data.user) {
+        //     this.state.setUser({
+        //       name: data.user.name,
+        //       email: data.user.email,
+        //     });
+        //     console.log(this.state.user);
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
 
         emailInput.value = user.email;
       }
@@ -200,40 +200,40 @@ class Header extends HTMLElement {
       }
 
       let user = {
-        name: usernameInput.value,
         email: newEmailInput.value,
+        name: usernameInput.value,
         password: newPasswordInput.value,
       };
       socket.emit('register', user);
 
-      try {
-        const { name, email, password } = user;
-        const res = await fetch('/register', {
-          method: 'POST',
-          credentials: 'include',
-          body: JSON.stringify({ name, email, password }),
-          headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await res.json();
-        console.log(data.user);
-        if (data.errors) {
-          // setEmailError(data.errors.email);
-          // setNameError(data.errors.name);
-          // setPasswordError(data.errors.password);
-          console.log(data.errors.email);
-          console.log(data.errors.name);
-          console.log(data.errors.password);
+      // try {
+      //   const { name, email, password } = user;
+      //   const res = await fetch('/register', {
+      //     method: 'POST',
+      //     credentials: 'include',
+      //     body: JSON.stringify({ name, email, password }),
+      //     headers: { 'Content-Type': 'application/json' },
+      //   });
+      //   const data = await res.json();
+      //   console.log(data.user);
+      //   if (data.errors) {
+      //     // setEmailError(data.errors.email);
+      //     // setNameError(data.errors.name);
+      //     // setPasswordError(data.errors.password);
+      //     console.log(data.errors.email);
+      //     console.log(data.errors.name);
+      //     console.log(data.errors.password);
 
-          registerError.innerHTML = data.errors;
-        }
-        if (data.user) {
-          this.state.setUser(data.user);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      //     registerError.innerHTML = data.errors;
+      //   }
+      //   if (data.user) {
+      //     this.state.setUser(data.user);
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
 
-      console.log(this.state.user);
+      console.log(user);
     });
   }
 
