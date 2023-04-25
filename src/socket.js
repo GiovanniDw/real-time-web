@@ -1,8 +1,10 @@
 import { io } from 'socket.io-client';
+const serverURL = import.meta.env.SERVER_URL;
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000';
+
+const URL = process.env.NODE_ENV === 'production' ? undefined : serverURL;
 export const socket = io(URL, {
-  // withCredentials: false,
+  withCredentials: true,
   autoConnect: true,
   cors: '*',
 });

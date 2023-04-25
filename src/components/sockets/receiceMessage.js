@@ -1,6 +1,6 @@
 import { $ } from '@/helpers/variables.js';
 export const receiveMessage = (msg) => {
-  console.log(msg)
+  console.log(msg);
   const messageList = $('.message-list');
   const item = document.createElement('li');
   item.textContent = msg;

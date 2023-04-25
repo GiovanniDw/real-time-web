@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { $, $this } from '@/helpers/variables.js';
 import socket from '@/socket.js';
 class Header extends HTMLElement {
@@ -10,39 +11,49 @@ class Header extends HTMLElement {
       toggleLogin: (bool) => {
         this.state.login = bool;
       },
+      user: {},
+      setUser: (user) => {
+        this.state.user = user;
+        console.log(this.state.user);
+      },
+    };
+
+    let state = {
       user: false,
       setUser: (user) => {
-        this.state.user == user;
-        console.log(this.state.user);
+        state.user = user;
       },
     };
 
     console.log(this.state);
 
     console.log('Constructed', this);
-
-    if (!this.state.user) {
+    console.log(this.state.user);
+    if (this.state.user) {
       this.innerHTML = /*html*/ `
       <div>
         <button id="loginBtn">Login</button>
+        <a href="/logout">Logout</a>
         <dialog id="modal" class="modal">
           <!-- Modal content -->
           <div class="modal-content">
             <span class="close">&times;</span>
             <div id="auth-state">
               <div id="login-container">
-                <form id="login-form" action="login">
+                <form id="login-form" action="/login">
                   <h3>Login</h3>
+                  <div id='login-error'></div>
                   <label for="email">email</label>
                   <input type="email" name="email" id="email" placeholder="jhon@do.com" autocomplete="email" />
                   <label for="password">password</label>
                   <input type="password" name="password" id="password" placeholder="****" autocomplete="current-password" />
-                  <input type="submit" />
+                  <input id='login-submit' type="submit" />
                 </form>
               </div>
               <div id="register-container">
-                <form id="register-form" action="register">
+                <form id="register-form" action="/register">
                   <h3>Register</h3>
+                  <div id='register-error'></div>
                   <label for="name">username</label>
                   <input type="text" name="name" id="name" placeholder="username" autocomplete="nickname" />
                   <label for="new-email">email</label>
@@ -77,6 +88,7 @@ class Header extends HTMLElement {
 
     const btn = this.querySelector('#loginBtn');
     const loginForm = this.querySelector('#login-form');
+    const loginSubmit = this.querySelector('#login-submit');
     const registerForm = this.querySelector('#register-form');
     const closeModal = this.querySelector('.close');
     const modal = this.querySelector('#modal');
@@ -85,6 +97,9 @@ class Header extends HTMLElement {
 
     const registerContainer = this.querySelector('#register-container');
     const loginContainer = this.querySelector('#login-container');
+
+    const registerError = this.querySelector('#register-error');
+    const loginError = this.querySelector('#login-error');
 
     const emailInput = this.querySelector('#email');
     const passwordInput = this.querySelector('#password');
@@ -104,7 +119,7 @@ class Header extends HTMLElement {
         this.state.toggleLogin(true);
         registerContainer.style.display = 'none';
         loginContainer.style.display = 'block';
-        authSelect.innerHTML = `No Account yet? Register!`;
+        authSelect.innerHTML = `No Account yet? Create One!`;
       }
     });
 
@@ -128,19 +143,24 @@ class Header extends HTMLElement {
       }
     };
 
-    loginForm.addEventListener('submit', async function (e) {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (emailInput.value) {
         let user = {
           email: emailInput.value,
           password: passwordInput.value,
         };
+        socket.emit('login', user);
         console.log(user);
-        socket.emit('set-username', emailInput.value);
+
+        // if(user.email && user.password) {
+
+        // }
+        
 
         try {
           const { name, email, password } = user;
-          const res = await fetch('http://localhost:3000/login', {
+          const res = await fetch('/login', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ name, email, password }),
@@ -152,11 +172,12 @@ class Header extends HTMLElement {
             console.log(data.errors.email);
             console.log(data.errors.name);
             console.log(data.errors.password);
+            loginError.innerHTML = data.errors;
           }
           if (data.user) {
             this.state.setUser({
               name: data.user.name,
-              email: data.user.email
+              email: data.user.email,
             });
             console.log(this.state.user);
           }
@@ -164,7 +185,7 @@ class Header extends HTMLElement {
           console.log(error);
         }
 
-        usernameInput.value = user.name;
+        emailInput.value = user.email;
       }
     });
 
@@ -183,10 +204,11 @@ class Header extends HTMLElement {
         email: newEmailInput.value,
         password: newPasswordInput.value,
       };
+      socket.emit('register', user);
 
       try {
         const { name, email, password } = user;
-        const res = await fetch('http://localhost:3000/register', {
+        const res = await fetch('/register', {
           method: 'POST',
           credentials: 'include',
           body: JSON.stringify({ name, email, password }),
@@ -201,6 +223,8 @@ class Header extends HTMLElement {
           console.log(data.errors.email);
           console.log(data.errors.name);
           console.log(data.errors.password);
+
+          registerError.innerHTML = data.errors;
         }
         if (data.user) {
           this.state.setUser(data.user);

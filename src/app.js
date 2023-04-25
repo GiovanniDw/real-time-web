@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import '@/css/main.css';
-import { html, render } from 'lit-html';
+// import { html, render } from 'lit-html';
 // import { io } from "socket.io-client";
 
-import { $, $$, app } from '@/helpers/variables';
+import { $, $$, app, html } from '@/helpers/variables';
 
 // import { renderHeader, header } from '@/components/Header.js';
 import ChatComponent from '@/components/Chat.js';
@@ -10,6 +11,7 @@ import Header from '@/components/Header.js';
 import loginModal, { modalTemplate } from '@/components/modal.js';
 import socket from '@/socket.js';
 import { receiveMessage } from './components/sockets/receiceMessage';
+const {token} = sessionStorage;
 // import "@/components/HeaderComponent.js"
 
 // const header = document.querySelector('header');
@@ -32,12 +34,13 @@ import { receiveMessage } from './components/sockets/receiceMessage';
 // app.innerHTML() = _App();
 //https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
-  return /*html*/ `
-  <header-component></header-component>
-    <chat-component></chat-component>
-<footer></footer>
+  return /*html*/`
+<header-component id="header"></header-component>
+<chat-component class="chat-container"></chat-component>
   `;
 };
+
+
 
 app.innerHTML = App();
 
@@ -122,9 +125,14 @@ socket.onAny((event, ...args) => {
   console.log(event, args);
 });
 
-socket.on('connect', (socket) => {
-  console.log(socket);
-});
+// socket.on('connect', (socket) => {
+//   console.log(socket);
+// });
+
+socket.on('authenticated', function () {
+    //do other things
+  }).emit('authenticate', {token}); //send the jwt
+
 
 // socket.on('receive-message', function (msg) {
 //   const item = document.createElement('li');
@@ -135,3 +143,9 @@ socket.on('connect', (socket) => {
 // });
 
 socket.on('receive-message', receiveMessage);
+// socket.on('login', setUser);
+
+
+// const setUser = (msg) => {
+//   console.log(msg)
+// };
