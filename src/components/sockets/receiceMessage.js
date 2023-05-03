@@ -8,5 +8,9 @@ export const receiveMessage = (msg) => {
   item.textContent = msg;
   item.setAttribute('class', 'message');
   messageList.appendChild(item);
-  messageListContainer.scrollTo({ top:messageListContainer.scrollHeight, left: 0, behavior: "smooth", });
+  messageListContainer.scrollTo({
+    top: messageListContainer.scrollHeight,
+    left: 0,
+    behavior: 'smooth',
+  });
 };

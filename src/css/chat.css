@@ -34,7 +34,7 @@
   /* align-self: flex-end; */
 }
 .message-list {
-overflow: scroll;
+  overflow: scroll;
 }
 .message-container {
   min-height: 0;
@@ -100,7 +100,6 @@ ul.message-list {
 
 .message::marker {
 }
-
 
 .room-item {
   appearance: none;

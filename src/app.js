@@ -11,8 +11,12 @@ import Header from '@/components/Header.js';
 // import loginModal, { modalTemplate } from '@/components/modal.js';
 import socket from '@/socket.js';
 import { receiveMessage } from './components/sockets/receiceMessage';
-const {token} = sessionStorage;
+const { token } = sessionStorage;
+
+import { getState, setState } from '@/state';
 // import "@/components/HeaderComponent.js"
+
+console.log(getState().isLoggedIn);
 
 // const header = document.querySelector('header');
 
@@ -34,25 +38,14 @@ const {token} = sessionStorage;
 // app.innerHTML() = _App();
 //https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
-  return /*html*/`
+  return /*html*/ `
 <header-component data-user="false" id="header"></header-component>
 <chat-component class="chat-container"></chat-component>
 <button id='fakeButton'></button>
   `;
 };
 
-App.state = {
-  loggedIn: 0,
-};
-
-
-
-
 app.innerHTML = App();
-
-
-  
-
 
 // render(template, app)
 // renderChat(main, socket);
@@ -65,7 +58,6 @@ app.innerHTML = App();
 // renderChat(app, socket);
 
 // console.log(renderBeforeFooter)
-
 
 //
 
@@ -134,14 +126,12 @@ socket.onAny((event, ...args) => {
   console.log(event, args);
 });
 socket.on('connect', (socket) => {
-
   console.log('socketconnection');
 });
 
 // socket.on('authenticated', function () {
 //     //do other things
 //   }).emit('authenticate', {token}); //send the jwt
-
 
 // socket.on('receive-message', function (msg) {
 //   const item = document.createElement('li');
@@ -151,11 +141,7 @@ socket.on('connect', (socket) => {
 //   window.scrollTo(0, document.body.scrollHeight);
 // });
 
-
-app.addEventListener('DOMContentLoaded', () => {
-
-});
-
+app.addEventListener('DOMContentLoaded', () => {});
 
 socket.on('receive-message', receiveMessage);
 
@@ -163,5 +149,3 @@ socket.on('receive-message', receiveMessage);
 //   console.log(msg)
 // };
 // socket.on('user', setUser);
-
-

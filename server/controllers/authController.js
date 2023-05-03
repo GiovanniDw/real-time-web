@@ -25,7 +25,7 @@ const alertError = (err) => {
       errors.email = 'This email already registered';
       return errors;
   }
-  if (err.message.includes('user validation failed')) {
+  if (err.message.includes('User validation failed')) {
 
       Object.values(err.errors).forEach(({ properties }) => {
           errors[properties.path] = properties.message
@@ -39,7 +39,14 @@ export const register = async (req, res) => {
   console.log(req.body);
   const { name, email, password } = req.body;
   try {
-      const user = await User.create({ name, email, password });
+
+    let newUser = {
+        username: email,
+        name: name,
+        password: password
+    }
+console.log(newUser);
+      const user = await User.create(newUser);
       const token = createJWT(user._id);
 
       // create a cookie name as jwt and contain token and expire after 1 day

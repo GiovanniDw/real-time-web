@@ -14,10 +14,10 @@ class ChatComponent extends HTMLElement {
     console.log('Constructed', this);
     this.innerHTML = /*html*/ `
       <div id="message-groups">
-        <div id='rooms-list'></div>
         <h2>Rooms</h2>
+        <div id='rooms-list'></div>
         <form id="create-room-form" action="">
-          <p>Create A room</p>
+          <h2>Create A room</h2>
           <label for="new-room-name">Room Name</label>
           <input id="new-room-name" type="text" placeholder="room name" />
           <input type='submit'>
@@ -45,7 +45,7 @@ class ChatComponent extends HTMLElement {
     const messageList = $('.message-list');
     const messageListContainer = $('.message-list-container');
     const roomsList = $('#rooms-list');
-    
+
     const createRoomForm = this.querySelector('#create-room-form');
     const newRoomName = this.querySelector('#new-room-name');
 
@@ -59,20 +59,19 @@ class ChatComponent extends HTMLElement {
       console.log(roomArray);
       roomsList;
 
-      roomArray.forEach(room => {
+      roomArray.forEach((room) => {
         const roomItem = document.createElement('button');
         roomItem.setAttribute('value', room._id);
         roomItem.setAttribute('class', 'room-item');
         roomItem.addEventListener('click', (e) => {
           console.log(e);
-          console.log(roomItem.value)
-        })
+          console.log(roomItem.value);
+        });
         roomItem.innerHTML = /*html*/ `
         ${room.name}
         `;
-        roomsList.appendChild(roomItem);  
+        roomsList.appendChild(roomItem);
       });
-      
     });
 
     messageForm.addEventListener('submit', function (e) {
@@ -92,13 +91,7 @@ class ChatComponent extends HTMLElement {
         input.value = '';
       }
     });
-    
-    
-
   }
-
-  
-
 
   /**
    * Runs when the element is removed from the DOM

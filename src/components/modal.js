@@ -3,18 +3,19 @@ import { $ } from '../../src/helpers/variables.js';
 import '@/css/modal.css';
 export const modalTemplate = () => {
   return html`
-    <div id="loginModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <div>
-          <form id="login-form" action="login">
-            <label for="username">Login</label>
-            <input type="text" name="username" id="username" placeholder="username" />
-          </form>
-        </div>
-      </div>
+<div id="loginModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div>
+      <form id="login-form" action="login">
+        <label for="username">Login</label>
+        <input type="text" name="username" id="username" placeholder="username" />
+      </form>
     </div>
+  </div>
+</div>
+
   `;
 };
 
@@ -29,25 +30,25 @@ class loginModal extends HTMLElement {
 
     console.log('Constructed', this);
     this.innerHTML = /*html*/ `
-  <div id="loginModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div>
-      <form id="login-form" action="login">
-        <label for="username">Login</label>
-        <input type="text" name="username" id="username" placeholder="username" />
-      </form>
+      <div id="loginModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div>
+          <form id="login-form" action="login">
+            <label for="username">Login</label>
+            <input type="text" name="username" id="username" placeholder="username" />
+          </form>
+        </div>
+        <div>
+          <form id="login-form" action="register">
+            <label for="username">Register</label>
+            <input type="email" name="email" id="email" placeholder="jhon@do.com" />
+            <input type="text" name="username" id="username" placeholder="username" />
+          </form>
+        </div>
+      </div>
     </div>
-    <div>
-      <form id="login-form" action="register">
-        <label for="username">Register</label>
-        <input type="email" name="email" id="email" placeholder="jhon@do.com" />
-        <input type="text" name="username" id="username" placeholder="username" />
-      </form>
-    </div>
-  </div>
-</div>
     `;
   }
 

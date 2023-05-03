@@ -177,12 +177,15 @@ io.on('connection', (socket) => {
 
     const { name, email, password } = user;
     try {
-      const loginUser = await User.create({ email, name, password });
+      const username = email;
+      const loginUser = await User.create({ username, name, password });
       socket.emit('user', loginUser);
       // create a cookie name as jwt and contain token and expire after 1 day
       // in cookies, expiration date calculate by milisecond
     } catch (error) {
       console.log(error);
+      socket.emit('register error', error);
+      
     }
   });
 
@@ -190,7 +193,8 @@ io.on('connection', (socket) => {
     console.log(user);
     const { password, email } = user;
     try {
-      const loginUser = await User.login(email, password);
+      const username = email;
+      const loginUser = await User.login(username, password);
 
       console.log(loginUser);
 
@@ -199,9 +203,9 @@ io.on('connection', (socket) => {
       socket.emit('user', loginUser);
     } catch (error) {
       console.log(error);
+      socket.emit('login error', error);
     }
   });
-
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

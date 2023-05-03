@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { $, $this } from '@/helpers/variables.js';
 import socket from '@/socket.js';
+import { getState, setState } from '@/state.js';
 class Header extends HTMLElement {
   constructor() {
     // Always call super first in constructor
     super();
-
+    console.log(getState().user);
+    const { isLoggedIn } = getState();
     this.state = {
       login: false,
       toggleLogin: (bool) => {
@@ -25,11 +27,7 @@ class Header extends HTMLElement {
       },
     };
 
-    console.log(this.state);
-
-    console.log('Constructed', this);
-    console.log(this.state.user);
-    if (!this.state.user) {
+    if (!isLoggedIn) {
       this.innerHTML = /*html*/ `
       <div>
         <button id="loginBtn">Login</button>
@@ -54,10 +52,10 @@ class Header extends HTMLElement {
                 <form id="register-form" action="/register">
                   <h3>Register</h3>
                   <div id='register-error'></div>
-                  <label for="new-email">email</label>
-                  <input type="email" name="email" id="new-email" placeholder="jhon@do.com" autocomplete="email" />
                   <label for="name">username</label>
                   <input type="text" name="name" id="name" placeholder="username" autocomplete="nickname" />
+                  <label for="new-email">email</label>
+                  <input type="email" name="email" id="new-email" placeholder="jhon@do.com" autocomplete="email" />
                   <label for="new-password">password</label>
                   <input type="password" name="password" id="new-password" placeholder="****" autocomplete="new-password" />
                   <input type="submit" />
@@ -82,9 +80,7 @@ class Header extends HTMLElement {
    * Runs each time the element is appended to or moved in the DOM
    */
   connectedCallback() {
-    let { login, user } = this.state;
-    console.log('userState');
-    console.log(this.state.user);
+    const { user } = getState();
 
     const btn = this.querySelector('#loginBtn');
     const loginForm = this.querySelector('#login-form');
@@ -150,41 +146,51 @@ class Header extends HTMLElement {
           email: emailInput.value,
           password: passwordInput.value,
         };
-        // socket.emit('login', user);
+
         console.log(user);
 
         // if(user.email && user.password) {
 
         // }
-        
 
         try {
-          const { name, email, password } = user;
-          const res = await fetch('/login', {
+          const { email, password } = user;
+          let username = email;
+          const res = await fetch('http://localhost:3000/login', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
           });
+
+          // socket.emit('login', user);
+
+          // socket.on('login error');
+
           const data = await res.json();
           console.log(data.user);
           if (data.errors) {
             console.log(data.errors.email);
             console.log(data.errors.name);
             console.log(data.errors.password);
-            loginError.innerHTML = data.errors;
+
+            const errorList = data.errors;
+            console.log(errorList);
+
+            // loginError.innerHTML = data.errors;
+
+            loginError.innerHTML = /*html*/ `
+            <p>${data.errors.email}</p>
+            <p>${data.errors.name}</p>
+            <p>${data.errors.password}</p>
+            `;
           }
           if (data.user) {
-            this.state.setUser({
-              name: data.user.name,
-              email: data.user.email,
-            });
-            console.log(this.state.user);
+            setState({ user: data.user, isLoggedIn: true });
           }
         } catch (error) {
           console.log(error);
         }
-
         emailInput.value = user.email;
       }
     });
@@ -195,45 +201,56 @@ class Header extends HTMLElement {
       usernameInput.value;
       newEmailInput.value;
       newPasswordInput.value;
-      if (usernameInput.value) {
-        console.log(usernameInput.value);
+      if (newEmailInput.value) {
+        console.log(newEmailInput.value);
+
+        let newUser = {
+          name: usernameInput.value,
+          email: newEmailInput.value,
+          password: newPasswordInput.value,
+        };
+
+      
+
+    
+      // socket.emit('register', user);
+
+      try {
+        const { name, email, password } = newUser;
+        let username = email;
+        const res = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({ email, name, password }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        console.log(data.user);
+        if (data.errors) {
+          // setEmailError(data.errors.email);
+          // setNameError(data.errors.name);
+          // setPasswordError(data.errors.password);
+          // console.log(data.errors.email);
+          // console.log(data.errors.name);
+          // console.log(data.errors.password);
+
+          registerError.innerHTML = /*html*/ `
+          <p>${data.errors.email}</p>
+          <p>${data.errors.name}</p>
+          <p>${data.errors.password}</p>
+          `;
+        }
+        if (data.user) {
+          setState({ user: data.user, isLoggedIn: true });
+          // this.state.setUser(data.user);
+        }
+      } catch (error) {
+        console.log(error);
       }
-
-      let user = {
-        email: newEmailInput.value,
-        name: usernameInput.value,
-        password: newPasswordInput.value,
-      };
-      socket.emit('register', user);
-
-      // try {
-      //   const { name, email, password } = user;
-      //   const res = await fetch('/register', {
-      //     method: 'POST',
-      //     credentials: 'include',
-      //     body: JSON.stringify({ name, email, password }),
-      //     headers: { 'Content-Type': 'application/json' },
-      //   });
-      //   const data = await res.json();
-      //   console.log(data.user);
-      //   if (data.errors) {
-      //     // setEmailError(data.errors.email);
-      //     // setNameError(data.errors.name);
-      //     // setPasswordError(data.errors.password);
-      //     console.log(data.errors.email);
-      //     console.log(data.errors.name);
-      //     console.log(data.errors.password);
-
-      //     registerError.innerHTML = data.errors;
-      //   }
-      //   if (data.user) {
-      //     this.state.setUser(data.user);
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      // }
+    
 
       console.log(user);
+    }
     });
   }
 
@@ -241,6 +258,7 @@ class Header extends HTMLElement {
    * Runs when the element is removed from the DOM
    */
   disconnectedCallback() {
+    setState({ user: {}, isLoggedIn: false });
     console.log('disconnected', this);
   }
 }
