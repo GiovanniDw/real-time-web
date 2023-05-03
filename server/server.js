@@ -69,14 +69,16 @@ app.options('*', cors(CorsOptions));
 app.use(express.json());
 app.use(express.static('public'));
 
+mongoose.connect(process.env.MONGO_DB, { dbName: process.env.DB_NAME,useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
+
+app.get('/login', login);
+app.get('/register', register);
 app.post('/login', login);
 app.post('/register', register);
+
 app.get('/logout', logout);
 app.get('/verifyuser', verifyuser);
 
-app.get('/hello', (req, res) => {
-  res.send('Hello Vite!');
-});
 
 // const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
 
@@ -124,7 +126,7 @@ app.get('/hello', (req, res) => {
 
 // config(app, io);
 
-mongoose.connect(process.env.MONGO_DB, { dbName: process.env.DB_NAME,useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
+
 
 
 io.on('connection', (socket) => {
@@ -173,12 +175,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('register', async (user) => {
+    console.log('register user 1');
     console.log(user);
 
     const { name, email, password } = user;
     try {
       const username = email;
-      const loginUser = await User.create({ username, name, password });
+      const loginUser = await User.create({ username: username, name:name, password: password });
       socket.emit('user', loginUser);
       // create a cookie name as jwt and contain token and expire after 1 day
       // in cookies, expiration date calculate by milisecond
@@ -191,7 +194,7 @@ io.on('connection', (socket) => {
 
   socket.on('login', async (user) => {
     console.log(user);
-    const { password, email } = user;
+    let { password, email } = user;
     try {
       const username = email;
       const loginUser = await User.login(username, password);

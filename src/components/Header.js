@@ -2,12 +2,13 @@
 import { $, $this } from '@/helpers/variables.js';
 import socket from '@/socket.js';
 import { getState, setState } from '@/state.js';
+const { isLoggedIn } = getState();
 class Header extends HTMLElement {
   constructor() {
     // Always call super first in constructor
     super();
     console.log(getState().user);
-    const { isLoggedIn } = getState();
+    
     this.state = {
       login: false,
       toggleLogin: (bool) => {
@@ -154,7 +155,7 @@ class Header extends HTMLElement {
         // }
 
         try {
-          const { email, password } = user;
+          let { email, password } = user;
           let username = email;
           const res = await fetch('http://localhost:3000/login', {
             method: 'POST',
@@ -187,6 +188,9 @@ class Header extends HTMLElement {
           }
           if (data.user) {
             setState({ user: data.user, isLoggedIn: true });
+            loginError.innerHTML = /*html*/ `
+          <p>Welcome Back! ${data.user.name}</p>
+            `
           }
         } catch (error) {
           console.log(error);
@@ -204,53 +208,54 @@ class Header extends HTMLElement {
       if (newEmailInput.value) {
         console.log(newEmailInput.value);
 
-        let newUser = {
+        let user = {
           name: usernameInput.value,
           email: newEmailInput.value,
           password: newPasswordInput.value,
         };
+        console.log(user);
 
-      
+        // socket.emit('register', user);
 
-    
-      // socket.emit('register', user);
+        try {
+          let { name, email, password } = user;
+          let username = email;
+          console.log(user);
+          const res = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ username, name, password }),
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const data = await res.json();
+          console.log(data.user);
+          if (data.errors) {
+            // setEmailError(data.errors.email);
+            // setNameError(data.errors.name);
+            // setPasswordError(data.errors.password);
+            // console.log(data.errors.email);
+            // console.log(data.errors.name);
+            // console.log(data.errors.password);
 
-      try {
-        const { name, email, password } = newUser;
-        let username = email;
-        const res = await fetch('http://localhost:3000/register', {
-          method: 'POST',
-          credentials: 'include',
-          body: JSON.stringify({ email, name, password }),
-          headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await res.json();
-        console.log(data.user);
-        if (data.errors) {
-          // setEmailError(data.errors.email);
-          // setNameError(data.errors.name);
-          // setPasswordError(data.errors.password);
-          // console.log(data.errors.email);
-          // console.log(data.errors.name);
-          // console.log(data.errors.password);
-
-          registerError.innerHTML = /*html*/ `
+            registerError.innerHTML = /*html*/ `
           <p>${data.errors.email}</p>
           <p>${data.errors.name}</p>
           <p>${data.errors.password}</p>
           `;
+          }
+          if (data.user) {
+            setState({ user: data.user, isLoggedIn: true });
+            registerError.innerHTML = /*html*/ `
+            <p>Welcome ${user.name}</p>
+            `;
+            // this.state.setUser(data.user);
+          }
+        } catch (error) {
+          console.log(error);
         }
-        if (data.user) {
-          setState({ user: data.user, isLoggedIn: true });
-          // this.state.setUser(data.user);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    
 
-      console.log(user);
-    }
+        console.log(user);
+      }
     });
   }
 

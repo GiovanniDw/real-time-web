@@ -2,6 +2,7 @@ import mongoose, { SchemaTypes } from 'mongoose';
 const Schema = mongoose.Schema;
 import passportLocalMongoose from 'passport-local-mongoose';
 import bcrypt from 'bcrypt';
+import { createLogger } from 'vite';
 
 const UserSchema = new Schema({
   id: Number,
@@ -23,9 +24,15 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.statics.login = async function (username, password) {
-  const user = await this.findOne({ username });
+  console.log('loginschema');
+  console.log(username + password);
+  let user = await this.findOne({ username });
   if (user) {
-    const isAuthenticated = await bcrypt.compare(password, user.password);
+    console.log(user);
+    console.log('compare pass')
+    console.log(password)
+    console.log(user.password)
+    let isAuthenticated = await bcrypt.compare(password, user.password);
     if (isAuthenticated) {
       return user;
     } else {

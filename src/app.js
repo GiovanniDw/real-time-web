@@ -144,6 +144,10 @@ socket.on('connect', (socket) => {
 app.addEventListener('DOMContentLoaded', () => {});
 
 socket.on('receive-message', receiveMessage);
+socket.on('login', (user) => {
+  console.log(user)
+  setState({user: user})
+});
 
 // const setUser = (msg) => {
 //   console.log(msg)

@@ -4,6 +4,7 @@ import { $, $$ } from '@/helpers/variables';
 import { LoginModal, modalTemplate } from '@/components/modal';
 import '@/css/chat.css';
 import socket from '@/socket.js';
+import {getState} from '@/state.js';
 // import { socket } from '../app.js';
 
 class ChatComponent extends HTMLElement {
@@ -38,6 +39,7 @@ class ChatComponent extends HTMLElement {
    * Runs each time the element is appended to or moved in the DOM
    */
   connectedCallback() {
+    const {user } = getState();
     console.log('connected!', this);
     const roomsDiv = this.querySelector('#message-groups');
     const input = $('#message-input');
@@ -78,10 +80,25 @@ class ChatComponent extends HTMLElement {
       e.preventDefault();
       if (input.value) {
         console.log(input.value);
-        socket.emit('send-message', input.value);
+        const { user } = getState();
+
+        let messageObject = {
+          user: user,
+          username: user.name,
+          msg: input.value
+        }
+        console.log(messageObject);
+        socket.emit('send-message', messageObject);
         const item = document.createElement('li');
-        item.textContent = input.value;
+        // item.textContent = input.value;
         item.setAttribute('class', 'message my-message');
+
+
+        item.innerHTML = /*html*/`
+        <p>${ input.value }</p><span class="time">${user.name}</span>
+        `;
+      
+
         messageList.appendChild(item);
         messageListContainer.scrollTo({
           top: messageList.scrollHeight,

@@ -1,6 +1,6 @@
 import {socket} from '@/socket.js';
 
-let state = { user: {}, room: {}, isLoggedIn: false }; // Initialize state object
+let state = { user: Object, room: Object, isLoggedIn: false }; // Initialize state object
 
 export function getState() {
   console.log(state)
