@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { $, $this } from '@/helpers/variables.js';
+import verifyUser from '@/helpers/verifyUser';
 import socket from '@/socket.js';
 import { getState, setState } from '@/state.js';
 import { get } from 'mongoose';
@@ -238,7 +239,7 @@ class Header extends HTMLElement {
           }
           if (data.user) {
             setState({ user: data.user, isLoggedIn: true });
-
+            verifyUser()
             this.state.setAuth(isLoggedIn);
             btn.style.display = 'none';
             logoutBtn.style.display=  'block'
@@ -296,6 +297,7 @@ class Header extends HTMLElement {
           if (data.user) {
             this.state.setAuth(isLoggedIn);
             setState({ user: data.user, isLoggedIn: true });
+            verifyUser();
             btn.style.display = 'none';
             logoutBtn.style.display=  'block'
             registerError.innerHTML = /*html*/ `

@@ -4,7 +4,7 @@ import { $, $$ } from '@/helpers/variables';
 import { LoginModal, modalTemplate } from '@/components/modal';
 import '@/css/chat.css';
 import socket from '@/socket.js';
-import {getState} from '@/state.js';
+import {getState, setState} from '@/state.js';
 // import { socket } from '../app.js';
 
 class ChatComponent extends HTMLElement {
@@ -25,6 +25,7 @@ class ChatComponent extends HTMLElement {
         </form>
       </div>
       <div class="message-container">
+        <div id="room-name"></div>
         <div class="message-list-container">
           <ul class="message-list"></ul>
         </div>
@@ -47,7 +48,7 @@ class ChatComponent extends HTMLElement {
     const messageList = $('.message-list');
     const messageListContainer = $('.message-list-container');
     const roomsList = $('#rooms-list');
-
+    const roomName = this.querySelector('#room-name');
     const createRoomForm = this.querySelector('#create-room-form');
     const newRoomName = this.querySelector('#new-room-name');
 
@@ -66,8 +67,14 @@ class ChatComponent extends HTMLElement {
         roomItem.setAttribute('value', room._id);
         roomItem.setAttribute('class', 'room-item');
         roomItem.addEventListener('click', (e) => {
+          const {user} = getState();
+          let room_id = room._id
+          setState({room: room})
+
           console.log(e);
           console.log(roomItem.value);
+          socket.emit('join', { name: user.name, room_id, user_id: user._id });
+          roomName.innerHTML = room.name
         });
         roomItem.innerHTML = /*html*/ `
         ${room.name}
@@ -80,15 +87,21 @@ class ChatComponent extends HTMLElement {
       e.preventDefault();
       if (messageInput.value) {
         console.log(messageInput.value);
-        const { user } = getState();
+        const { user, room } = getState();
+        console.log(room);
 
         let messageObject = {
-          user: user,
+          msg: messageInput.value,
+          room: room._id,
           username: user.name,
-          msg: messageInput.value
+          
         }
+        let room_id = room._id;
+        let msg = messageInput.value
         console.log(messageObject);
-        socket.emit('send-message', messageObject);
+        socket.emit('send-message', msg, room_id, () => setState({message: ''}));
+        
+
         const item = document.createElement('li');
         // item.textContent = messageInput.value;
         item.setAttribute('class', 'message my-message');

@@ -1,5 +1,5 @@
 import {socket} from '@/socket.js';
-
+import verifyUser from '@/helpers/verifyUser';
 let state = { user: null, room: null, isLoggedIn: false }; // Initialize state object
 
 export function getState() {

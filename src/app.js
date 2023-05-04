@@ -66,7 +66,7 @@ app.innerHTML = App();
 
 console.log(URL);
 
-verifyUser()
+// verifyUser()
 
 if ('customElements' in window) {
   customElements.define('header-component', Header);

@@ -64,12 +64,19 @@ const io = new Server(server, {
 
 app.use(cors(CorsOptions));
 // app.use(sessionMiddleware);
-app.use(cookieParser()); 
+app.use(cookieParser());
 app.options('*', cors(CorsOptions));
 app.use(express.json());
 app.use(express.static('public'));
 
-mongoose.connect(process.env.MONGO_DB, { dbName: process.env.DB_NAME,useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
+mongoose
+  .connect(process.env.MONGO_DB, {
+    dbName: process.env.DB_NAME,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('connected'))
+  .catch((err) => console.log(err));
 
 app.get('/login', login);
 app.get('/register', register);
@@ -80,6 +87,121 @@ app.get('/logout', logout);
 app.post('/logout', logout);
 app.get('/verifyuser', verifyuser);
 
+io.on('connection', (socket) => {
+  // mongoose
+  //   .connect(process.env.MONGO_DB, {
+  //     dbName: process.env.DB_NAME,
+  //     useNewUrlParser: true,
+  //     useUnifiedTopology: true,
+  //   })
+  //   .then(() => console.log('connected'))
+  //   .catch((err) => console.log(err));
+
+  console.log('user connected');
+  console.log(socket.request.session);
+  console.log(socket.id);
+
+  Room.find().then((result) => {
+    socket.emit('output-rooms', result);
+  });
+  socket.on('create-room', (name) => {
+    const room = new Room({ name });
+    room.save().then((result) => {
+      io.emit('room-created', result);
+    });
+  });
+
+  socket.on('join', ({ name, room_id, user_id }) => {
+    const { error, user } = addUser({
+      socket_id: socket.id,
+      name,
+      room_id,
+      user_id,
+    });
+    socket.join(room_id);
+    if (error) {
+      console.log('join error', error);
+    } else {
+      console.log('join user', user);
+    }
+  });
+
+  //   socket.emit("session", {
+  //     sessionID: socket.sessionID,
+  //     userID: socket.userID,
+  //   });
+
+  //   socket.on('send-nickname', function(nickname) {
+  //     socket.nickname = nickname;
+  //     users.push(socket.nickname);
+  //     console.log(users);
+  // });
+
+  socket.on('send-message', ({message, room_id, cb}) => {
+    const user = getUser(socket.id);
+    console.log(message);
+    // socket.broadcast.emit('receive-message', msg);
+
+    const msgToStore = {
+      name: user.name,
+      user_id: user.user_id,
+      room_id,
+      text: message,
+    };
+    console.log('message', msgToStore);
+    const msg = new Message(msgToStore);
+    msg.save().then((result) => {
+      io.to(room_id).emit('message', result);
+      cb();
+    });
+  });
+
+  socket.on('set-username', (username) => {
+    console.log(username);
+    socket.emit('receive-message', username);
+  });
+
+  // Old User Login
+  // socket.on('register', async (user) => {
+  //   console.log('register user 1');
+  //   console.log(user);
+
+  //   const { name, email, password } = user;
+  //   try {
+  //     const username = email;
+  //     const loginUser = await User.create({ username: username, name:name, password: password });
+  //     socket.emit('user', loginUser);
+  //     // create a cookie name as jwt and contain token and expire after 1 day
+  //     // in cookies, expiration date calculate by milisecond
+  //   } catch (error) {
+  //     console.log(error);
+  //     socket.emit('register error', error);
+
+  //   }
+  // });
+
+  // socket.on('login', async (user) => {
+  //   console.log(user);
+  //   let { password, email } = user;
+  //   try {
+  //     const username = email;
+  //     const loginUser = await User.login(username, password);
+
+  //     console.log(loginUser);
+
+  //     // socket.handshake.session.userdata = loginUser;
+  //     // socket.handshake.session.save();
+  //     socket.emit('user', loginUser);
+  //   } catch (error) {
+  //     console.log(error);
+  //     socket.emit('login error', error);
+  //   }
+  // });
+  socket.on('disconnect', () => {
+    const user = removeUser(socket.id);
+    console.log('user disconnected');
+  });
+});
 
 // const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
 
@@ -126,110 +248,5 @@ app.get('/verifyuser', verifyuser);
 // });
 
 // config(app, io);
-
-
-
-
-io.on('connection', (socket) => {
-  // mongoose
-  //   .connect(process.env.MONGO_DB, {
-  //     dbName: process.env.DB_NAME,
-  //     useNewUrlParser: true,
-  //     useUnifiedTopology: true,
-  //   })
-  //   .then(() => console.log('connected'))
-  //   .catch((err) => console.log(err));
-
-  console.log('user connected');
-  console.log(socket.request.session);
-  console.log(socket.id);
-
-  Room.find().then((result) => {
-    socket.emit('output-rooms', result);
-  });
-  socket.on('create-room', (name) => {
-    const room = new Room({ name });
-    room.save().then((result) => {
-      io.emit('room-created', result);
-    });
-  });
-
-  socket.on('join', ({ name, room_id, user_id }) => {
-    const { error, user } = addUser({
-        socket_id: socket.id,
-        name,
-        room_id,
-        user_id
-    })
-    socket.join(room_id);
-    if (error) {
-        console.log('join error', error)
-    } else {
-        console.log('join user', user)
-    }
-})
-
-
-
-  //   socket.emit("session", {
-  //     sessionID: socket.sessionID,
-  //     userID: socket.userID,
-  //   });
-
-  //   socket.on('send-nickname', function(nickname) {
-  //     socket.nickname = nickname;
-  //     users.push(socket.nickname);
-  //     console.log(users);
-  // });
-
-  socket.on('send-message', (msg) => {
-    console.log(msg);
-    socket.broadcast.emit('receive-message', msg);
-  });
-
-  socket.on('set-username', (username) => {
-    console.log(username);
-    socket.emit('receive-message', username);
-  });
-
-  socket.on('register', async (user) => {
-    console.log('register user 1');
-    console.log(user);
-
-    const { name, email, password } = user;
-    try {
-      const username = email;
-      const loginUser = await User.create({ username: username, name:name, password: password });
-      socket.emit('user', loginUser);
-      // create a cookie name as jwt and contain token and expire after 1 day
-      // in cookies, expiration date calculate by milisecond
-    } catch (error) {
-      console.log(error);
-      socket.emit('register error', error);
-      
-    }
-  });
-
-  socket.on('login', async (user) => {
-    console.log(user);
-    let { password, email } = user;
-    try {
-      const username = email;
-      const loginUser = await User.login(username, password);
-
-      console.log(loginUser);
-
-      // socket.handshake.session.userdata = loginUser;
-      // socket.handshake.session.save();
-      socket.emit('user', loginUser);
-    } catch (error) {
-      console.log(error);
-      socket.emit('login error', error);
-    }
-  });
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
 
 ViteExpress.bind(app, io);
