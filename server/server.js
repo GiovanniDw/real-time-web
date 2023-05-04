@@ -77,6 +77,7 @@ app.post('/login', login);
 app.post('/register', register);
 
 app.get('/logout', logout);
+app.post('/logout', logout);
 app.get('/verifyuser', verifyuser);
 
 
@@ -152,6 +153,23 @@ io.on('connection', (socket) => {
       io.emit('room-created', result);
     });
   });
+
+  socket.on('join', ({ name, room_id, user_id }) => {
+    const { error, user } = addUser({
+        socket_id: socket.id,
+        name,
+        room_id,
+        user_id
+    })
+    socket.join(room_id);
+    if (error) {
+        console.log('join error', error)
+    } else {
+        console.log('join user', user)
+    }
+})
+
+
 
   //   socket.emit("session", {
   //     sessionID: socket.sessionID,

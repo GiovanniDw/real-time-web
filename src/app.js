@@ -14,6 +14,7 @@ import { receiveMessage } from './components/sockets/receiceMessage';
 const { token } = sessionStorage;
 
 import { getState, setState } from '@/state';
+import verifyUser from './helpers/verifyUser';
 // import "@/components/HeaderComponent.js"
 
 console.log(getState().isLoggedIn);
@@ -64,6 +65,8 @@ app.innerHTML = App();
 // setupCounter(document.querySelector("#counter"));
 
 console.log(URL);
+
+verifyUser()
 
 if ('customElements' in window) {
   customElements.define('header-component', Header);

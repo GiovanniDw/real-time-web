@@ -1,6 +1,6 @@
 import {socket} from '@/socket.js';
 
-let state = { user: Object, room: Object, isLoggedIn: false }; // Initialize state object
+let state = { user: null, room: null, isLoggedIn: false }; // Initialize state object
 
 export function getState() {
   console.log(state)
@@ -10,9 +10,6 @@ export function getState() {
 export function setState(newState) {
   console.log(state);
   console.log(newState);
-
   state = { ...state, ...newState }; // Merge new state with existing state
-
-
-
 }
+

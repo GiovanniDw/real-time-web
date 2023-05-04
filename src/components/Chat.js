@@ -42,7 +42,7 @@ class ChatComponent extends HTMLElement {
     const {user } = getState();
     console.log('connected!', this);
     const roomsDiv = this.querySelector('#message-groups');
-    const input = $('#message-input');
+    const messageInput = $('#message-input');
     const messageForm = $('#message-form');
     const messageList = $('.message-list');
     const messageListContainer = $('.message-list-container');
@@ -78,24 +78,24 @@ class ChatComponent extends HTMLElement {
 
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (input.value) {
-        console.log(input.value);
+      if (messageInput.value) {
+        console.log(messageInput.value);
         const { user } = getState();
 
         let messageObject = {
           user: user,
           username: user.name,
-          msg: input.value
+          msg: messageInput.value
         }
         console.log(messageObject);
         socket.emit('send-message', messageObject);
         const item = document.createElement('li');
-        // item.textContent = input.value;
+        // item.textContent = messageInput.value;
         item.setAttribute('class', 'message my-message');
 
 
         item.innerHTML = /*html*/`
-        <p>${ input.value }</p><span class="time">${user.name}</span>
+        <p>${ messageInput.value }</p><span class="time">${user.name}</span>
         `;
       
 
@@ -105,7 +105,7 @@ class ChatComponent extends HTMLElement {
           left: 0,
           behavior: 'smooth',
         });
-        input.value = '';
+        messageInput.value = '';
       }
     });
   }

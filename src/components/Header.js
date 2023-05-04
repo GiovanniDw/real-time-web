@@ -2,13 +2,15 @@
 import { $, $this } from '@/helpers/variables.js';
 import socket from '@/socket.js';
 import { getState, setState } from '@/state.js';
-const { isLoggedIn } = getState();
+import { get } from 'mongoose';
+
 class Header extends HTMLElement {
   constructor() {
     // Always call super first in constructor
     super();
+    const { isLoggedIn } = getState();
     console.log(getState().user);
-    
+
     this.state = {
       login: false,
       toggleLogin: (bool) => {
@@ -19,6 +21,10 @@ class Header extends HTMLElement {
         this.state.user = user;
         console.log(this.state.user);
       },
+      auth: isLoggedIn,
+      setAuth: (isLoggedIn) => {
+        this.state.auth = isLoggedIn
+      }
     };
 
     let state = {
@@ -28,11 +34,13 @@ class Header extends HTMLElement {
       },
     };
 
+    
+
     if (!isLoggedIn) {
       this.innerHTML = /*html*/ `
       <div>
         <button id="loginBtn">Login</button>
-        <a href="/logout">Logout</a>
+        <button id="logoutBtn">Logout</button>
         <dialog id="modal" class="modal">
           <!-- Modal content -->
           <div class="modal-content">
@@ -72,7 +80,7 @@ class Header extends HTMLElement {
       console.log(this.state.user.name);
       this.innerHTML = /*html*/ `
       <button id="logoutBtn">Logout</button>
-      <a href="/logout"></a>
+      <a href="/logout">Logout</a>
       `;
     }
   }
@@ -84,15 +92,17 @@ class Header extends HTMLElement {
     const { user } = getState();
 
     const btn = this.querySelector('#loginBtn');
+    const logoutBtn = this.querySelector('#logoutBtn');
     const loginForm = this.querySelector('#login-form');
     const loginSubmit = this.querySelector('#login-submit');
-    const registerForm = this.querySelector('#register-form');
+    
     const closeModal = this.querySelector('.close');
     const modal = this.querySelector('#modal');
     const authSelect = $('#auth-select');
     const authState = this.querySelector('#auth-state');
 
     const registerContainer = this.querySelector('#register-container');
+    const registerForm = this.querySelector('#register-form');
     const loginContainer = this.querySelector('#login-container');
 
     const registerError = this.querySelector('#register-error');
@@ -120,23 +130,64 @@ class Header extends HTMLElement {
       }
     });
 
-    const ul = $('.message-list');
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        
+        const res = await fetch('http://localhost:3000/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+
+        if (data.logout) {
+          setState({ user: null, isLoggedIn: false });
+
+          btn.style.display = 'block';
+          logoutBtn.style.display=  'none'
+          loginError.innerHTML = /*html*/ `
+        
+          `;
+          // hide login modal after login
+          setTimeout(() => {
+            // this.state.toggleLogin(false);
+            modal.style.display = 'block';
+          }, 200);
+        }
+
+
+        console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  })
+
+
+    logoutBtn.style.display=  'none';
     btn.onclick = function () {
       modal.style.display = 'block';
     };
-
-    if (!user.name) {
+    const { isLoggedIn } = getState();
+    if (!isLoggedIn) {
       modal.style.display = 'block';
     }
 
     closeModal.onclick = function () {
-      modal.style.display = 'none';
+      const { isLoggedIn } = getState();
+      
+      if (isLoggedIn){
+        btn.style.display = 'none';
+      modal.style.display = 'none';}
     };
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
+      const { isLoggedIn } = getState();
       if (event.target == modal) {
-        modal.style.display = 'none';
+        if(isLoggedIn) {
+          
+          btn.style.display = 'none';
+          modal.style.display = 'none';}
       }
     };
 
@@ -177,7 +228,6 @@ class Header extends HTMLElement {
 
             const errorList = data.errors;
             console.log(errorList);
-
             // loginError.innerHTML = data.errors;
 
             loginError.innerHTML = /*html*/ `
@@ -188,9 +238,18 @@ class Header extends HTMLElement {
           }
           if (data.user) {
             setState({ user: data.user, isLoggedIn: true });
+
+            this.state.setAuth(isLoggedIn);
+            btn.style.display = 'none';
+            logoutBtn.style.display=  'block'
             loginError.innerHTML = /*html*/ `
           <p>Welcome Back! ${data.user.name}</p>
-            `
+            `;
+            // hide login modal after login
+            setTimeout(() => {
+              // this.state.toggleLogin(false);
+              modal.style.display = 'none';
+            }, 2000);
           }
         } catch (error) {
           console.log(error);
@@ -215,8 +274,6 @@ class Header extends HTMLElement {
         };
         console.log(user);
 
-        // socket.emit('register', user);
-
         try {
           let { name, email, password } = user;
           let username = email;
@@ -230,13 +287,6 @@ class Header extends HTMLElement {
           const data = await res.json();
           console.log(data.user);
           if (data.errors) {
-            // setEmailError(data.errors.email);
-            // setNameError(data.errors.name);
-            // setPasswordError(data.errors.password);
-            // console.log(data.errors.email);
-            // console.log(data.errors.name);
-            // console.log(data.errors.password);
-
             registerError.innerHTML = /*html*/ `
           <p>${data.errors.email}</p>
           <p>${data.errors.name}</p>
@@ -244,17 +294,24 @@ class Header extends HTMLElement {
           `;
           }
           if (data.user) {
+            this.state.setAuth(isLoggedIn);
             setState({ user: data.user, isLoggedIn: true });
+            btn.style.display = 'none';
+            logoutBtn.style.display=  'block'
             registerError.innerHTML = /*html*/ `
             <p>Welcome ${user.name}</p>
             `;
-            // this.state.setUser(data.user);
+
+            // hide register modal after register
+            setTimeout(() => {
+              // this.state.toggleLogin(false);
+              modal.style.display = 'none';
+            }, 2000);
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
 
-        console.log(user);
       }
     });
   }
@@ -263,7 +320,7 @@ class Header extends HTMLElement {
    * Runs when the element is removed from the DOM
    */
   disconnectedCallback() {
-    setState({ user: {}, isLoggedIn: false });
+    // setState({ user: {}, isLoggedIn: false });
     console.log('disconnected', this);
   }
 }
