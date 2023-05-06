@@ -42,7 +42,6 @@ const App = function _App() {
   return /*html*/ `
 <header-component data-user="false" id="header"></header-component>
 <chat-component class="chat-container"></chat-component>
-<button id='fakeButton'></button>
   `;
 };
 
@@ -147,9 +146,10 @@ socket.on('connect', (socket) => {
 app.addEventListener('DOMContentLoaded', () => {});
 
 socket.on('receive-message', receiveMessage);
+
 socket.on('login', (user) => {
-  console.log(user)
-  setState({user: user})
+  console.log(user);
+  setState({ user: user });
 });
 
 // const setUser = (msg) => {

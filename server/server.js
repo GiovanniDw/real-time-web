@@ -82,10 +82,14 @@ app.get('/login', login);
 app.get('/register', register);
 app.post('/login', login);
 app.post('/register', register);
+app.get('/verifyuser', verifyuser);
+app.post('/verifyuser', verifyuser);
+
+
 
 app.get('/logout', logout);
 app.post('/logout', logout);
-app.get('/verifyuser', verifyuser);
+
 
 io.on('connection', (socket) => {
   // mongoose
@@ -98,7 +102,9 @@ io.on('connection', (socket) => {
   //   .catch((err) => console.log(err));
 
   console.log('user connected');
+  console.log('session');
   console.log(socket.request.session);
+  console.log('ID');
   console.log(socket.id);
 
   Room.find().then((result) => {
@@ -115,8 +121,8 @@ io.on('connection', (socket) => {
     const { error, user } = addUser({
       socket_id: socket.id,
       name,
-      room_id,
       user_id,
+      room_id,
     });
     socket.join(room_id);
     if (error) {
@@ -137,29 +143,41 @@ io.on('connection', (socket) => {
   //     console.log(users);
   // });
 
-  socket.on('send-message', ({message, room_id, cb}) => {
+  socket.on('send-message', ({msg, room_id, cb}) => {
     const user = getUser(socket.id);
-    console.log(message);
-    // socket.broadcast.emit('receive-message', msg);
+    console.log(msg);
+    // socket.emit('receive-message', msg);
 
     const msgToStore = {
       name: user.name,
       user_id: user.user_id,
       room_id,
-      text: message,
+      text: msg,
     };
-    console.log('message', msgToStore);
-    const msg = new Message(msgToStore);
-    msg.save().then((result) => {
-      io.to(room_id).emit('message', result);
-      cb();
+    console.log('messageStore');
+    console.log(msgToStore);
+    const message = new Message({
+      name: user.name,
+      user_id: user.user_id,
+      room_id: room_id,
+      text: msg,
+    });
+    message.save().then((result) => {
+      io.to(room_id).emit('receive-message', result);
     });
   });
 
-  socket.on('set-username', (username) => {
-    console.log(username);
-    socket.emit('receive-message', username);
-  });
+  socket.on('get-messages-history', room_id => {
+    Message.find({ room_id }).then(result => {
+      console.log(result)
+        socket.emit('output-message', result)
+    })
+})
+
+  // socket.on('set-username', (username) => {
+  //   console.log(username);
+  //   socket.emit('receive-message', username);
+  // });
 
   // Old User Login
   // socket.on('register', async (user) => {
@@ -199,6 +217,7 @@ io.on('connection', (socket) => {
   // });
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
+    console.log(user)
     console.log('user disconnected');
   });
 });

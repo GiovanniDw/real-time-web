@@ -3,19 +3,18 @@ import { $ } from '../../src/helpers/variables.js';
 import '@/css/modal.css';
 export const modalTemplate = () => {
   return html`
-<div id="loginModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div>
-      <form id="login-form" action="login">
-        <label for="username">Login</label>
-        <input type="text" name="username" id="username" placeholder="username" />
-      </form>
+    <div id="loginModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div>
+          <form id="login-form" action="login">
+            <label for="username">Login</label>
+            <input type="text" name="username" id="username" placeholder="username" />
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
   `;
 };
 

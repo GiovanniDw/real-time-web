@@ -67,8 +67,8 @@ export const login = async (req, res) => {
   try {
     let user = await User.login(username, password);
     let token = createJWT(user._id);
-    console.log('token')
-    console.log(token)
+    console.log('token');
+    console.log(token);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user });
   } catch (error) {
@@ -80,12 +80,15 @@ export const login = async (req, res) => {
 export const verifyuser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    console.log('token')
-    console.log(token)
+    console.log('token');
+    console.log(token);
     jwt.verify(token, 'chatroom secret', async (err, decodedToken) => {
       if (err) {
+        console.log('error.msg');
         console.log(err.message);
       } else {
+        console.log('decodedToken.id');
+        console.log(decodedToken.id);
         let user = await User.findById(decodedToken.id);
         res.json(user);
         next();
@@ -100,3 +103,5 @@ export const logout = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
   res.status(200).json({ logout: true });
 };
+
+

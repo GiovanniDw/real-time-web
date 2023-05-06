@@ -1,15 +1,18 @@
-import {setState} from '@/state.js';
+import { setState, getState } from '@/state.js';
 const verifyUser = async () => {
   try {
-    const res = await fetch('http://localhost:5000/verifyuser', {
+    const res = await fetch('http://localhost:3000/verifyuser', {
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
     const data = await res.json();
-   setState({user: data});
-  } catch (error) {
-    console.log(error)
-  }
-}
+    console.log('verify');
+    console.log(data);
 
-export default verifyUser
+    setState({ user: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default verifyUser;

@@ -24,8 +24,8 @@ class Header extends HTMLElement {
       },
       auth: isLoggedIn,
       setAuth: (isLoggedIn) => {
-        this.state.auth = isLoggedIn
-      }
+        this.state.auth = isLoggedIn;
+      },
     };
 
     let state = {
@@ -35,7 +35,9 @@ class Header extends HTMLElement {
       },
     };
 
-    
+    // const shadow = this.attachShadow({ mode: "open" });
+
+    // console.log(shadow)
 
     if (!isLoggedIn) {
       this.innerHTML = /*html*/ `
@@ -96,7 +98,7 @@ class Header extends HTMLElement {
     const logoutBtn = this.querySelector('#logoutBtn');
     const loginForm = this.querySelector('#login-form');
     const loginSubmit = this.querySelector('#login-submit');
-    
+
     const closeModal = this.querySelector('.close');
     const modal = this.querySelector('#modal');
     const authSelect = $('#auth-select');
@@ -130,10 +132,12 @@ class Header extends HTMLElement {
         authSelect.innerHTML = `No Account yet? Create One!`;
       }
     });
+    const ServerURL = import.meta.env.SERVER_URL;
+
+    console.log(ServerURL);
 
     logoutBtn.addEventListener('click', async () => {
       try {
-        
         const res = await fetch('http://localhost:3000/logout', {
           method: 'POST',
           credentials: 'include',
@@ -145,7 +149,7 @@ class Header extends HTMLElement {
           setState({ user: null, isLoggedIn: false });
 
           btn.style.display = 'block';
-          logoutBtn.style.display=  'none'
+          logoutBtn.style.display = 'none';
           loginError.innerHTML = /*html*/ `
         
           `;
@@ -156,15 +160,13 @@ class Header extends HTMLElement {
           }, 200);
         }
 
-
         console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  })
+      } catch (error) {
+        console.log(error);
+      }
+    });
 
-
-    logoutBtn.style.display=  'none';
+    logoutBtn.style.display = 'none';
     btn.onclick = function () {
       modal.style.display = 'block';
     };
@@ -175,20 +177,21 @@ class Header extends HTMLElement {
 
     closeModal.onclick = function () {
       const { isLoggedIn } = getState();
-      
-      if (isLoggedIn){
+
+      if (isLoggedIn) {
         btn.style.display = 'none';
-      modal.style.display = 'none';}
+        modal.style.display = 'none';
+      }
     };
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
       const { isLoggedIn } = getState();
       if (event.target == modal) {
-        if(isLoggedIn) {
-          
+        if (isLoggedIn) {
           btn.style.display = 'none';
-          modal.style.display = 'none';}
+          modal.style.display = 'none';
+        }
       }
     };
 
@@ -239,10 +242,9 @@ class Header extends HTMLElement {
           }
           if (data.user) {
             setState({ user: data.user, isLoggedIn: true });
-            verifyUser()
             this.state.setAuth(isLoggedIn);
             btn.style.display = 'none';
-            logoutBtn.style.display=  'block'
+            logoutBtn.style.display = 'block';
             loginError.innerHTML = /*html*/ `
           <p>Welcome Back! ${data.user.name}</p>
             `;
@@ -250,7 +252,7 @@ class Header extends HTMLElement {
             setTimeout(() => {
               // this.state.toggleLogin(false);
               modal.style.display = 'none';
-            }, 2000);
+            }, 500);
           }
         } catch (error) {
           console.log(error);
@@ -297,9 +299,8 @@ class Header extends HTMLElement {
           if (data.user) {
             this.state.setAuth(isLoggedIn);
             setState({ user: data.user, isLoggedIn: true });
-            verifyUser();
             btn.style.display = 'none';
-            logoutBtn.style.display=  'block'
+            logoutBtn.style.display = 'block';
             registerError.innerHTML = /*html*/ `
             <p>Welcome ${user.name}</p>
             `;
@@ -308,15 +309,16 @@ class Header extends HTMLElement {
             setTimeout(() => {
               // this.state.toggleLogin(false);
               modal.style.display = 'none';
-            }, 2000);
+            }, 500);
           }
         } catch (error) {
           console.error(error);
         }
-
       }
     });
   }
+
+  attributeChangedCallback() {}
 
   /**
    * Runs when the element is removed from the DOM
