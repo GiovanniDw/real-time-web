@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { html, render } from 'lit-html';
 import { $, $$ } from '@/helpers/variables';
 import { LoginModal, modalTemplate } from '@/components/modal';
 import '@/css/chat.css';
@@ -28,7 +27,7 @@ class ChatComponent extends HTMLElement {
       </div>
       <div class="message-container">
         <div class="message-list-container">
-          <ul class="message-list"></ul>
+          <ul class="message-list"><li class='message alert'>Please Select or Create a room to chat in</li></ul>
         </div>
         <form id="message-form">
           <input id="message-input" placeholder="your message" type="text" />
@@ -118,20 +117,6 @@ class ChatComponent extends HTMLElement {
       
         socket.emit('send-message', { msg: msg, room_id: room_id });
         setState({ message: '' });
-        // const item = document.createElement('li');
-        // // item.textContent = messageInput.value;
-        // item.setAttribute('class', 'message my-message');
-
-        // item.innerHTML = /*html*/ `
-        // <p>${messageInput.value}</p><span class="time">${user.name}</span>
-        // `;
-
-        // messageList.appendChild(item);
-        // messageListContainer.scrollTo({
-        //   top: messageList.scrollHeight,
-        //   left: 0,
-        //   behavior: 'smooth',
-        // });
         messageInput.value = '';
       }
     });
@@ -147,52 +132,6 @@ class ChatComponent extends HTMLElement {
     console.log('disconnected', this);
   }
 }
-// export const renderChat = (container, socket) => {
-//   const chatTemplate = () => html`
-//     <main>
-//       <div class="message-container">
-//         <ul class="message-list"></ul>
-//       </div>
-//       <form id="message-form">
-//         <input id="message-input" placeholder="your message" type="text" />
-//       </form>
-//     </main>
-//   `;
 
-//   render(chatTemplate(), container);
-
-//   const messageInput = $('#message-input');
-//   const messageForm = $('#message-form');
-
-//   messageForm.addEventListener('submit', async function (e) {
-//     e.preventDefault();
-//     if (messageInput.value) {
-//       await socket.emit('send-message', messageInput.value);
-//       const item = document.createElement('li');
-//       item.textContent = messageInput.value;
-//       item.setAttribute('class', 'message my-message');
-//       messageList.appendChild(item);
-//       window.scrollTo(0, document.body.scrollHeight);
-
-//       messageInput.value = '';
-//     }
-//   });
-
-//   // socket.on('connect', () => {
-//   // });
-
-//   // socket.on('receive-message', function (msg) {
-//   //   const item = document.createElement('li');
-//   //   item.textContent = msg;
-//   //   item.setAttribute('class', 'message');
-//   //   messageList.appendChild(item);
-//   //   window.scrollTo(0, document.body.scrollHeight);
-
-//   // });
-// };
-
-// if ('customElements' in window) {
-//   customElements.define('chat-component', ChatComponent);
-// }
 
 export default ChatComponent;

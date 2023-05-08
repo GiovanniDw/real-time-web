@@ -28,13 +28,7 @@ class Header extends HTMLElement {
       },
     };
 
-    let state = {
-      user: false,
-      setUser: (user) => {
-        state.user = user;
-      },
-    };
-
+    
     // const shadow = this.attachShadow({ mode: "open" });
 
     // console.log(shadow)
@@ -118,16 +112,9 @@ class Header extends HTMLElement {
     const newEmailInput = this.querySelector('#new-email');
     const newPasswordInput = this.querySelector('#new-password');
 
-
-    const ServerURL = import.meta.env.VITE_SERVER_URL;
-
-    console.log(ServerURL);
-    const { user } = getState();
-
     authSelect.addEventListener('click', () => {
       if (this.state.login === true) {
         this.state.toggleLogin(false);
-        // authState.innerHTML = this.registerHTML;
         registerContainer.style.display = 'block';
         loginContainer.style.display = 'none';
         authSelect.innerHTML = `Already have an account? Login`;
@@ -163,8 +150,6 @@ class Header extends HTMLElement {
             modal.style.display = 'block';
           }, 200);
         }
-
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -207,12 +192,6 @@ class Header extends HTMLElement {
           password: passwordInput.value,
         };
 
-        console.log(user);
-
-        // if(user.email && user.password) {
-
-        // }
-
         try {
           let { email, password } = user;
           let username = email;
@@ -222,10 +201,6 @@ class Header extends HTMLElement {
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
           });
-
-          // socket.emit('login', user);
-
-          // socket.on('login error');
 
           const data = await res.json();
           console.log(data.user);
@@ -332,9 +307,5 @@ class Header extends HTMLElement {
     console.log('disconnected', this);
   }
 }
-
-// if ('customElements' in window) {
-//   customElements.define('header-com', HeaderComponent);
-// }
 
 export default Header;

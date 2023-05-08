@@ -97,6 +97,11 @@ ul.message-list {
   align-self: flex-end;
   background: var(--color-bg-my-message);
 }
+.message.alert {
+  align-self: center;
+  background: var(--color-light-gray);
+}
+
 
 .message::marker {
 }
