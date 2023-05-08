@@ -92,7 +92,7 @@ class Header extends HTMLElement {
    * Runs each time the element is appended to or moved in the DOM
    */
   connectedCallback() {
-    const { user } = getState();
+    
 
     const btn = this.querySelector('#loginBtn');
     const logoutBtn = this.querySelector('#logoutBtn');
@@ -118,6 +118,12 @@ class Header extends HTMLElement {
     const newEmailInput = this.querySelector('#new-email');
     const newPasswordInput = this.querySelector('#new-password');
 
+
+    const ServerURL = import.meta.env.VITE_SERVER_URL;
+
+    console.log(ServerURL);
+    const { user } = getState();
+
     authSelect.addEventListener('click', () => {
       if (this.state.login === true) {
         this.state.toggleLogin(false);
@@ -132,9 +138,7 @@ class Header extends HTMLElement {
         authSelect.innerHTML = `No Account yet? Create One!`;
       }
     });
-    const ServerURL = import.meta.env.SERVER_URL;
 
-    console.log(ServerURL);
 
     logoutBtn.addEventListener('click', async () => {
       try {

@@ -1,8 +1,7 @@
 import { defineConfig, loadEnv, createLogger, searchForWorkspaceRoot } from 'vite';
 import {fileURLToPath} from 'url';
 import commonjs from '@rollup/plugin-commonjs';
-import path from 'path';
-import eslint from 'vite-plugin-eslint';
+
 
 
 export default defineConfig({

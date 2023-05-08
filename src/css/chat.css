@@ -1,10 +1,10 @@
 .chat-container {
   height: auto;
-  display: flex;
+  display: grid;
   max-height: 100%;
   flex-direction: row;
-  /* grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr; */
+  grid-template-columns: 1fr 2fr;
+  /* grid-template-rows: 1fr; */
   align-items: stretch;
   align-content: stretch;
   top: 0;
@@ -105,4 +105,21 @@ ul.message-list {
   appearance: none;
   width: 100%;
   padding: 1em;
+  border: 1px solid gray;
+  background: var(--color-light);
+}
+.room-item.active {
+
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+.input-group {
+  display: flex;
+
+}
+
+
+.input-group:first-child {
+  flex-grow: 2;
 }

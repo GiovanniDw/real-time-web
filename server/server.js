@@ -115,6 +115,10 @@ io.on('connection', (socket) => {
     room.save().then((result) => {
       io.emit('room-created', result);
     });
+    Room.find().then((result) => {
+      socket.emit('output-rooms', result);
+    });
+
   });
 
   socket.on('join', ({ name, room_id, user_id }) => {

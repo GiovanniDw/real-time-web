@@ -17,7 +17,6 @@ import { getState, setState } from '@/state';
 import verifyUser from './helpers/verifyUser';
 // import "@/components/HeaderComponent.js"
 
-console.log(getState().isLoggedIn);
 
 // const header = document.querySelector('header');
 
@@ -41,7 +40,7 @@ console.log(getState().isLoggedIn);
 const App = function _App() {
   return /*html*/ `
 <header-component data-user="false" id="header"></header-component>
-<chat-component class="chat-container"></chat-component>
+<chat-component class="chat-container" ></chat-component>
   `;
 };
 
@@ -63,7 +62,6 @@ app.innerHTML = App();
 
 // setupCounter(document.querySelector("#counter"));
 
-console.log(URL);
 
 // verifyUser()
 

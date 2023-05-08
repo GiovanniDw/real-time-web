@@ -4,7 +4,7 @@ import { $, $$ } from '@/helpers/variables';
 import { LoginModal, modalTemplate } from '@/components/modal';
 import '@/css/chat.css';
 import socket from '@/socket.js';
-import { getState, setState } from '@/state.js';
+import { addObserver, getState, setState } from '@/state.js';
 import { receiveMessage } from './sockets/receiceMessage';
 // import { socket } from '../app.js';
 
@@ -19,14 +19,14 @@ class ChatComponent extends HTMLElement {
         <h2>Rooms</h2>
         <div id='rooms-list'></div>
         <form id="create-room-form" action="">
-          <h2>Create A room</h2>
-          <label for="new-room-name">Room Name</label>
+          <label for="new-room-name">Create Room</label>
+          <div class="input-group">
           <input id="new-room-name" type="text" placeholder="room name" />
-          <input type='submit'>
+          <button type='submit'>Create Room</button>
+          </div>
         </form>
       </div>
       <div class="message-container">
-        <div id="room-name"></div>
         <div class="message-list-container">
           <ul class="message-list"></ul>
         </div>
@@ -44,67 +44,54 @@ class ChatComponent extends HTMLElement {
     const { user } = getState();
     console.log('connected!', this);
     const roomsDiv = this.querySelector('#message-groups');
-    const messageInput = $('#message-input');
-    const messageForm = $('#message-form');
+    const messageInput = this.querySelector('#message-input');
+    const messageForm = this.querySelector('#message-form');
     const messageList = $('.message-list');
-    const messageListContainer = $('.message-list-container');
-    const roomsList = $('#rooms-list');
-    const roomName = this.querySelector('#room-name');
+    const messageListContainer = this.querySelector('.message-list-container');
+    const roomsList = this.querySelector('#rooms-list');
     const createRoomForm = this.querySelector('#create-room-form');
     const newRoomName = this.querySelector('#new-room-name');
 
     createRoomForm.addEventListener('submit', function (e) {
+      e.preventDefault();
       if (newRoomName.value) {
         socket.emit('create-room', newRoomName.value);
+        newRoomName.value = '';
       }
     });
 
     socket.on('output-rooms', (roomArray) => {
-      console.log(roomArray);
-      // roomsList;
+      const { rooms } = getState();
 
       roomArray.forEach((room) => {
         const roomItem = document.createElement('button');
         roomItem.setAttribute('value', room._id);
         roomItem.setAttribute('class', 'room-item');
         roomItem.addEventListener('click', (e) => {
-          
-          const allRooms = roomsList.querySelectorAll('#room-item');
-
-          console.log(allRooms)
-
-
+          const allRooms = $$('.room-item');
+          allRooms.forEach((element) => {
+            element.classList.remove('active');
+          });
 
           roomItem.classList.add('active');
 
           messageList.innerHTML = '';
-          const { user } = getState();
+          let { user } = getState();
           let room_id = room._id;
           setState({ room: room, messages: [] });
 
-          console.log(e);
-          console.log(roomItem.value);
-
           socket.emit('join', { name: user.name, room_id, user_id: user._id });
-
-          roomName.innerHTML = room.name;
-          console.log('this')
-          console.log(this)
-
 
           socket.emit('get-messages-history', room_id);
           socket.on('output-message', (msgs) => {
-            console.log('messages');
-            console.log(msgs);
+            messageList.innerHTML = '';
+            setState({ messages: [] });
             setState({ messages: msgs });
             const { messages } = getState();
             const messageArray = messages;
-
             messages.forEach((element) => {
               receiveMessage(element);
             });
-
-            console.log(messageArray);
           });
         });
 
@@ -115,27 +102,20 @@ class ChatComponent extends HTMLElement {
       });
     });
 
-
     messageForm.addEventListener('submit', function (e) {
       e.preventDefault();
       if (messageInput.value) {
         setState({ message: messageInput.value });
-        console.log(messageInput.value);
-        const { user, room } = getState();
-        console.log('room');
-        console.log(room);
-        console.log('user');
-        console.log(user);
+        let { user, room } = getState();
+
         let messageObject = {
           msg: messageInput.value,
           room: room._id,
           name: user.name,
         };
         let room_id = room._id;
-        console.log('room_id');
-        console.log(room_id);
         let msg = messageInput.value;
-        console.log(messageObject);
+      
         socket.emit('send-message', { msg: msg, room_id: room_id });
         setState({ message: '' });
         // const item = document.createElement('li');
@@ -166,9 +146,6 @@ class ChatComponent extends HTMLElement {
   disconnectedCallback() {
     console.log('disconnected', this);
   }
-
-
-
 }
 // export const renderChat = (container, socket) => {
 //   const chatTemplate = () => html`
