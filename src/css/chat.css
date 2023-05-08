@@ -102,7 +102,6 @@ ul.message-list {
   background: var(--color-light-gray);
 }
 
-
 .message::marker {
 }
 
@@ -114,16 +113,13 @@ ul.message-list {
   background: var(--color-light);
 }
 .room-item.active {
-
   background: var(--color-dark);
   color: var(--color-white);
 }
 
 .input-group {
   display: flex;
-
 }
-
 
 .input-group:first-child {
   flex-grow: 2;

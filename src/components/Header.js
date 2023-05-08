@@ -28,7 +28,6 @@ class Header extends HTMLElement {
       },
     };
 
-    
     // const shadow = this.attachShadow({ mode: "open" });
 
     // console.log(shadow)
@@ -86,8 +85,6 @@ class Header extends HTMLElement {
    * Runs each time the element is appended to or moved in the DOM
    */
   connectedCallback() {
-    
-
     const btn = this.querySelector('#loginBtn');
     const logoutBtn = this.querySelector('#logoutBtn');
     const loginForm = this.querySelector('#login-form');
@@ -125,7 +122,6 @@ class Header extends HTMLElement {
         authSelect.innerHTML = `No Account yet? Create One!`;
       }
     });
-
 
     logoutBtn.addEventListener('click', async () => {
       try {

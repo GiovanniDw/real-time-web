@@ -1,4 +1,4 @@
-import { html, render } from 'lit-html';
+// import { html, render } from 'lit-html';
 import { $ } from '../../src/helpers/variables.js';
 import '@/css/modal.css';
 export const modalTemplate = () => {

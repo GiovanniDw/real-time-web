@@ -16,7 +16,6 @@ const { token } = sessionStorage;
 import { getState, setState } from '@/state';
 import verifyUser from './helpers/verifyUser';
 
-
 // app.innerHTML() = _App();
 //https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
 const App = function _App() {
@@ -33,7 +32,6 @@ if ('customElements' in window) {
   customElements.define('chat-component', ChatComponent);
 }
 
-
 socket.onAny((event, ...args) => {
   console.log(event, args);
 });
@@ -49,4 +47,3 @@ socket.on('login', (user) => {
   console.log(user);
   setState({ user: user });
 });
-

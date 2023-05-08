@@ -1,8 +1,3 @@
-/* eslint-disable no-unused-vars */
-// const express = require('express');
-// const ViteExpress = require('vite-express');
-// const cors = require('cors');
-// const http = require('http');
 import express from 'express';
 import session from 'express-session';
 import ViteExpress from 'vite-express';
@@ -92,14 +87,6 @@ app.post('/logout', logout);
 
 
 io.on('connection', (socket) => {
-  // mongoose
-  //   .connect(process.env.MONGO_DB, {
-  //     dbName: process.env.DB_NAME,
-  //     useNewUrlParser: true,
-  //     useUnifiedTopology: true,
-  //   })
-  //   .then(() => console.log('connected'))
-  //   .catch((err) => console.log(err));
 
   console.log('user connected');
   console.log('session');
@@ -136,17 +123,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  //   socket.emit("session", {
-  //     sessionID: socket.sessionID,
-  //     userID: socket.userID,
-  //   });
-
-  //   socket.on('send-nickname', function(nickname) {
-  //     socket.nickname = nickname;
-  //     users.push(socket.nickname);
-  //     console.log(users);
-  // });
-
   socket.on('send-message', ({msg, room_id, cb}) => {
     const user = getUser(socket.id);
     console.log(msg);
@@ -178,98 +154,11 @@ io.on('connection', (socket) => {
     })
 })
 
-  // socket.on('set-username', (username) => {
-  //   console.log(username);
-  //   socket.emit('receive-message', username);
-  // });
-
-  // Old User Login
-  // socket.on('register', async (user) => {
-  //   console.log('register user 1');
-  //   console.log(user);
-
-  //   const { name, email, password } = user;
-  //   try {
-  //     const username = email;
-  //     const loginUser = await User.create({ username: username, name:name, password: password });
-  //     socket.emit('user', loginUser);
-  //     // create a cookie name as jwt and contain token and expire after 1 day
-  //     // in cookies, expiration date calculate by milisecond
-  //   } catch (error) {
-  //     console.log(error);
-  //     socket.emit('register error', error);
-
-  //   }
-  // });
-
-  // socket.on('login', async (user) => {
-  //   console.log(user);
-  //   let { password, email } = user;
-  //   try {
-  //     const username = email;
-  //     const loginUser = await User.login(username, password);
-
-  //     console.log(loginUser);
-
-  //     // socket.handshake.session.userdata = loginUser;
-  //     // socket.handshake.session.save();
-  //     socket.emit('user', loginUser);
-  //   } catch (error) {
-  //     console.log(error);
-  //     socket.emit('login error', error);
-  //   }
-  // });
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
     console.log(user)
     console.log('user disconnected');
   });
 });
-
-// const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
-
-// io.use(wrap(sessionMiddleware));
-
-// io.use((socket, next) => {
-//   const sessionID = socket.handshake.auth.sessionID;
-//   if (sessionID) {
-//     // find existing session
-//     const session = sessionStore.findSession(sessionID);
-//     if (session) {
-//       socket.sessionID = sessionID;
-//       socket.userID = session.userID;
-//       socket.username = session.username;
-//       return next();
-//     }
-//   }
-//   const username = socket.handshake.auth.username;
-//   if (!username) {
-//     return next(new Error("invalid username"));
-//   }
-//   // create new session
-//   socket.sessionID = randomId();
-//   socket.userID = randomId();
-//   socket.username = username;
-//   next();
-// });
-
-// io.use(
-//   socketioJwt.authorize({
-//     secret: process.env.SESSION_SECRET,
-//     handshake: true,
-//     auth_header_required: false,
-//   })
-// );
-
-// io.use((socket, next) => {
-//   const session = socket.request.session;
-//   if (session && session.authenticated) {
-//     next();
-//   } else {
-//     next(new Error('unauthorized'));
-//   }
-// });
-
-// config(app, io);
 
 ViteExpress.bind(app, io);

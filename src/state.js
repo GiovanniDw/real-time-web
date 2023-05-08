@@ -1,12 +1,12 @@
 import { socket } from '@/socket.js';
-const observers = new Set(); 
-let state = { 
-  user: null, 
-  room: null, 
-  isLoggedIn: false, 
-  message: '', 
-  messages: [], 
-  rooms: [] 
+const observers = new Set();
+let state = {
+  user: null,
+  room: null,
+  isLoggedIn: false,
+  message: '',
+  messages: [],
+  rooms: [],
 }; // Initialize state object
 
 export function getState() {

@@ -114,7 +114,7 @@ class ChatComponent extends HTMLElement {
         };
         let room_id = room._id;
         let msg = messageInput.value;
-      
+
         socket.emit('send-message', { msg: msg, room_id: room_id });
         setState({ message: '' });
         messageInput.value = '';
@@ -132,6 +132,5 @@ class ChatComponent extends HTMLElement {
     console.log('disconnected', this);
   }
 }
-
 
 export default ChatComponent;

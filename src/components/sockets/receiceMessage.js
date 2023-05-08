@@ -8,15 +8,11 @@ export const receiveMessage = (obj) => {
 
   const receivedFrom = obj.user;
 
-
-
-
   const { name, text, room_id, user_id } = obj;
 
   const messageListContainer = $('.message-list-container');
   const messageList = $('.message-list');
   const item = document.createElement('li');
-
 
   if (obj.user_id === currentUser._id) {
     item.setAttribute('class', 'message my-message');
