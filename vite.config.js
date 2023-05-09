@@ -11,6 +11,12 @@ export default defineConfig({
   optimizeDeps: {},
   publicDir: '/public',
   css: {
+    modules: {
+      scopeBehaviour: 'local',
+    },
+    postcss: {
+
+    },
     devSourcemap: true
   },
   server: {

@@ -70,7 +70,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('connected'))
+  .then(() => console.log('Mongoose connected'))
   .catch((err) => console.log(err));
 
 app.get('/login', login);
@@ -97,17 +97,14 @@ io.on('connection', (socket) => {
   Room.find().then((result) => {
     socket.emit('output-rooms', result);
   });
+
   socket.on('create-room', (name) => {
     const room = new Room({ name });
     room.save().then((result) => {
       io.emit('room-created', result);
     });
-    Room.find().then((result) => {
-      socket.emit('output-rooms', result);
-    });
-
   });
-
+  
   socket.on('join', ({ name, room_id, user_id }) => {
     const { error, user } = addUser({
       socket_id: socket.id,
@@ -118,14 +115,17 @@ io.on('connection', (socket) => {
     socket.join(room_id);
     if (error) {
       console.log('join error', error);
+      io.to(room_id).emit('receive-message', {msg: 'err'});
     } else {
+      io.to(room_id).emit('receive-message', {msg: 'hallo', user_id: null});
       console.log('join user', user);
     }
   });
 
-  socket.on('send-message', ({msg, room_id, cb}) => {
+  socket.on('send-message', ({msg, room_id,alert, cb}) => {
     const user = getUser(socket.id);
     console.log(msg);
+    console.log(alert);
     // socket.emit('receive-message', msg);
 
     const msgToStore = {
@@ -141,10 +141,20 @@ io.on('connection', (socket) => {
       user_id: user.user_id,
       room_id: room_id,
       text: msg,
+      alert: alert,
     });
+
     message.save().then((result) => {
+      console.log(result)
       io.to(room_id).emit('receive-message', result);
     });
+  });
+
+  socket.on('drawing', (data) => {
+    console.log(data)
+
+    io.to(data.room_id).emit('drawing', data)
+    // socket.broadcast.emit('drawing', data)
   });
 
   socket.on('get-messages-history', room_id => {
@@ -157,6 +167,12 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
     console.log(user)
+    for (const room of socket.rooms) {
+      if (room !== socket.id) {
+        socket.to(room).emit("user has left", socket.id);
+      }
+    }
+
     console.log('user disconnected');
   });
 });

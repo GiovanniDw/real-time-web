@@ -1,0 +1,39 @@
+input[type=color]{
+  padding: 0;
+  width: 2em;
+  height: 2em;
+}
+
+#draw-component {
+  display: block;
+  position: relative;
+  //  padding: 1em;
+  // margin: 1em;
+  height: auto;
+  width: 100%;
+
+}
+
+#draw-container {
+  display: block;
+ height: 100%;
+ width: 100%;
+ // border: 1px solid gray;
+}
+
+#draw-inputs {
+position: absolute;
+top: 1em;
+left: 1em;
+z-index: 1;
+}
+
+canvas#whiteboard {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}

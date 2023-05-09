@@ -75,8 +75,7 @@ class Header extends HTMLElement {
     } else {
       console.log(this.state.user.name);
       this.innerHTML = /*html*/ `
-      <button id="logoutBtn">Logout</button>
-      <a href="/logout">Logout</a>
+<button id="logoutBtn">Logout</button>
       `;
     }
   }
@@ -134,7 +133,7 @@ class Header extends HTMLElement {
 
         if (data.logout) {
           setState({ user: null, isLoggedIn: false });
-
+          setState({})
           btn.style.display = 'block';
           logoutBtn.style.display = 'none';
           loginError.innerHTML = /*html*/ `
