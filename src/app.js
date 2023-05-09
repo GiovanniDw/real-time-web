@@ -32,6 +32,7 @@ app.innerHTML = App();
 if ('customElements' in window) {
   customElements.define('header-component', Header);
   customElements.define('chat-component', ChatComponent);
+  customElements.define('draw-component', WhiteBoard);
 }
 
 socket.onAny((event, ...args) => {

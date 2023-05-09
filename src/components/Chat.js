@@ -137,9 +137,9 @@ this.innerHTML = template
     // let room_id = room._id;
 
 
-    if ('customElements' in window) {
-      customElements.define('draw-component', WhiteBoard);
-    }
+    // if ('customElements' in window) {
+    //   customElements.define('draw-component', WhiteBoard);
+    // }
 
   }
   /**

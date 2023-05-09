@@ -124,7 +124,7 @@ class Header extends HTMLElement {
 
     logoutBtn.addEventListener('click', async () => {
       try {
-        const res = await fetch('http://localhost:3000/logout', {
+        const res = await fetch('/logout', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -190,7 +190,7 @@ class Header extends HTMLElement {
         try {
           let { email, password } = user;
           let username = email;
-          const res = await fetch('http://localhost:3000/login', {
+          const res = await fetch('/login', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ username, password }),
@@ -255,7 +255,7 @@ class Header extends HTMLElement {
           let { name, email, password } = user;
           let username = email;
           console.log(user);
-          const res = await fetch('http://localhost:3000/register', {
+          const res = await fetch('/register', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ username, name, password }),
