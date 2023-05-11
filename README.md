@@ -1,148 +1,231 @@
-# Real-Time Web @cmda-minor-web 2022 - 2023
+
+# Real Time Web
 
 ## Table of Contents
-- [Synopsis](#synopsis)
-- [Description](#description)
-- [Communication](#communication)
-- [Goals](#goals)
-- [Grading](#grading)
-- [Programme](#programme)
 
-## Synopsis
-- Course: Real-Time Web
-- Course Coordinator: Justus Sturkenboom ([@ju5tu5](https://github.com/ju5tu5))
-- Minor Coordinator(s): Robert Spier ([@roberrrt-s](https://github.com/roberrrt-s)) & Vasilis van Gemert ([@vasilisvg](https://github.com/vasilisvg))
-- Lecturers: Shyanta Vleugel ([@shyanta](https://github.com/shyanta)) & Justus Sturkenboom ([@ju5tu5](https://github.com/ju5tu5))
-- Student Assistants: 
-- Credit: 3 ECTS credits
-- Academic year: 2022-2023
-- Programme: Communication and Multimedia Design (full time bachelor)
-- Language: Dutch instructions and English resources
+- [Real Time Web](#real-time-web)
+  - [Table of Contents](#table-of-contents)
+- [Course Info](#course-info)
+  - [Assignment](#assignment)
+    - [Goals](#goals)
+    - [Rubic](#rubic)
+- [Getting A Grip](#getting-a-grip)
+  - [Make It so](#make-it-so)
+    - [Team](#team)
+    - [Coding Style](#coding-style)
+      - [Eslint](#eslint)
+      - [Prettier](#prettier)
+    - [Individual](#individual)
+      - [Features](#features)
+      - [File Structure](#file-structure)
+- [Sockets \& Data](#sockets--data)
+  - [(Proof of) Concept](#proof-of-concept)
+      - [Database Models](#database-models)
+- [Dealing with Multiple Users](#dealing-with-multiple-users)
+  - [Data Management](#data-management)
+  - [User Testing](#user-testing)
+- [Resources](#resources)
+    - [State](#state)
+    - [Custom Elements](#custom-elements)
 
-## Description
+
+# Course Info
+
+[GitHub - cmda-minor-web/real-time-web-2223: During this course you will learn how to build a real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.](https://github.com/cmda-minor-web/real-time-web-2223)
+
+## Assignment
+
 During this course you will learn how to build a real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.
 
-## Communication
-- [Github](https://github.com/cmda-minor-web/real-time-web-2223)
-- [Microsoft Teams](https://teams.microsoft.com/l/channel/19%3a61df853840064eae8ae6fc2dc9fc4566%40thread.tacv2/09%2520Real%2520Time%2520Web?groupId=c8b97eb6-ad53-4531-ad66-5c3c6297951c&tenantId=0907bb1e-21fc-476f-8843-02d09ceb59a7)
-- [Brightspace](https://dlo.mijnhva.nl/d2l/home/456154)
+### Goals
 
-If you have questions:
-- [Look at the additional resources]()
-- [Use a search engine like startpage](https://www.startpage.com/)
-- [Ask questions on MS Teams](https://teams.microsoft.com/l/channel/19%3a61df853840064eae8ae6fc2dc9fc4566%40thread.tacv2/09%2520Real%2520Time%2520Web?groupId=c8b97eb6-ad53-4531-ad66-5c3c6297951c&tenantId=0907bb1e-21fc-476f-8843-02d09ceb59a7) (please help each other!)
-- [Contact a student-assisstant](#synopsis)
-- [Contact a lecturer](#synopsis)
-
-## Goals
 After finishing this program you can:
-- _deal with real-time complexity;_
-- _handle real-time client-server interaction;_
-- _handle real-time data management;_
-- _handle multi-user support._
 
-## Grading
-Your efforts will be graded using a single point rubric (see below). You will have to pass the criterion (centre column) to pass the course. During the test you will be consulted and will be given feedback on things we think deficient and things we think are an improvement on the criterion.
+- *deal with real-time complexity;*
+- *handle real-time client-server interaction;*
+- *handle real-time data management;*
+- *handle multi-user support.*
 
-| Deficiency | Criterion | Improvement |
-|:--|:--|:--|
-|  | *Project* Your app is working and published on Heroku. Your project is thoroughly documented in the `README.md` file in your repository. Included are a description of the data-lifecycle, real-time events and external data source used by your app. |  |
-|  | *Complexity* You’ve implemented enough real-time functionality for us to test your comprehension of the subject. A lot of functionality is self-written. You are able to manipulate online examples live. |  |
-|  | *Client-server interaction* By interacting with the app, a user can influence the data model of the server in real time by directly modifying data OR by influencing API requests between server and source. The student has set up the data manipulations. |  |
-|  | *Data management* The server maintains a data model and each client is continuously updated with the correct data. |  |
-|  | *Multi-user support* Multiple clients can connect to the server. Interaction works as expected and is not dependent on the number of clients. You can explain how your app approaches this. |  |
+### Rubic
 
-## Programme
+| **Deficiency**              | **Criterion**                                                                                                                                                                                                                                |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| *Project*                   | Your app is working and published on Heroku. Your project is thoroughly documented in the `README.md` file in your repository. Included are a description of the data-lifecycle, real-time events and external data source used by your app. |
+| Complexity                  | You’ve implemented enough real-time functionality for us to test your comprehension of the subject. A lot of functionality is self-written. You are able to manipulate online examples live.                                                 |
+| *Client-server interaction* | By interacting with the app, a user can influence the data model of the server in real time by directly modifying data OR by influencing API requests between server and source. The student has set up the data manipulations.              |
+| Data management             | The server maintains a data model and each client is continuously updated with the correct data.                                                                                                                                             |
+| *Multi-user support*        | Multiple clients can connect to the server. Interaction works as expected and is not dependent on the number of clients. You can explain how your app approaches this.                                                                       |
 
-### Daily Schedule
-To keep things simple we use a daily schedule that will be used during normal course days (monday/tuesday). We make exceptions for fridays, on these days a different schedule will be given.
+# Getting A Grip
 
-| Time | Who | Activity |
-|:--|:--|:--|
-| *~09:00* | *(Shyanta \|\| Justus)* | *Standup* |
-| 09:30 | Tribe *+(Shyanta \|\| Justus)* | Talk with crucial information (make sure you attend!) |
-| 11:00 | Tribe | Work on the (day)assignment |
-|  | Per table *+(Shyanta \|\| Justus)* | Standup |
-| 13:00 | Tribe *+(Student assistants)* | Continue work on the (day)assignment |
-| 16:00ish | Tribe | Wrapup |
+## Make It so
 
-### Week 1 - Getting a grip
-Goal: Build and deploy a simple but unique real-time app
+### Team
 
-#### Monday 17 April 
-**Talk subjects:** Hit the ground running... [(slides)](https://docs.google.com/presentation/d/1MLSch_uKNEDyfz7fo71jbJrprunxQwd9GtgTse8wWpo/edit?usp=sharing) Course objective and explanation of the assignment, examples from last year, explanation of real-time, (live coded) bare bone chat app and deployment on Heroku.\
-**Day assignment:** [(assignment)](./course/week-1.md#assignment-1-make-it-so) Make it so *(as a team)*: Implement (code/style/discuss/deploy) basic chat (or other realtime) functionality on your teampage!
+- [GitHub - wongsrila/teamchat](https://github.com/wongsrila/teamchat)
 
-#### Tuesday 18 April
-**Talk subjects:** My first realtime web app! [(slides)](https://docs.google.com/presentation/d/18eftO3epzIXDjdwl3cn5Wq99fkQYCUnExUqq9P72A3k) Short recap, (local) data management, using (wire) flows for realtime web apps.\
-**Day assignment:** [(assignment)](./course/week-1.md#assignment-2-make-it-so) Make it so *(individually)*. i) Create (code/style/discuss/deploy) a chat app (or other realtime functionality) based on the examples and ii) add your own unique feature!
+```zsh
+.
+├── public
+│   ├── css
+│   │   └── style.css
+│   ├── index.html
+│   └── js
+│       ├── client.js
+│       └── modal.js
+├── server.js
+├── README.md 
+└──package.json
+```
 
-#### Friday 21 april
+### Coding Style
 
-Friday ~~afternoon~~ morning we will have a [peer review session](./course/peer-review.md). You will read, comment and fire issues on each others code. Doing this is really good for your programming insight and helps others refining/refactoring their code.
+#### Eslint
 
-| Time | Who | Activity |
-|:--|:--|:--|
-| 9:30 | Tribe *+(Shyanta \|\| Justus)* | Peer review |
-| 11:00 | Tribe *+(Shyanta \|\| Justus)* | Afronding Peer review |
+```javascript
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
 
-### Week 2 - Sockets and data
-Goal: Store, manipulate and share data between server-client   
+module.exports = {
+  root: true,
+  'extends': [
+    'eslint:recommended',
+  ],
+  parserOptions: {
+    allowImportExportEverywhere: true,
+    ecmaVersion: 'latest',
+    sourceType: "module"
+  },
+  env: {
+    node: true,
+    browser: true,
+    es6: true
+  },
+  rules: {
+    "no-unused-vars": "off"
+  }
+}
+```
 
-#### Monday 24 April
-**Talk subjects:** Data driven development?! [(slides)]() Feedback about last week, final assignment and conditions (rubric), explanation of data management, Long polling vs Websockets. \
-**Day assignment:** [(assignment)](./course/week-2.md#assignment-1-proof-of-concept) (Proof of) Concept *(individually)*. i) Create a (3 > 1) concept based on existing data from an API and ii) map this data using modelling techniques.
+#### Prettier
 
-#### Tuesday 25 April
-**Talk subjects:** Above all else, show the data. [(slides)]() Securing real-time web apps, offline support, the publication/subscription model and (case study) Quek!\
-**Day assignment:** [(assignment)](./course/week-2.md#assignment-2-proof-of-concept) Proof of concept *(individually)*: i) Create (code/style/discuss/deploy) part of the core functionality for your concept and ii) show the  corresponding data lifecycle diagram.
+```json
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi":true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "printWidth": 100,
+  "trailingComma": "es5"
+}
+```
 
-### Week 3 - Dealing with multiple users
-Goal: Handle data sharing and multi-user support 
+### Individual
 
-#### Monday 8 May
-**Talk subjects:** Roll your own... [(slides) ]() Data management, the functional programming trinity (map, filter and reduce). OAuth?!
-**Day assignment:** [(assignment)](./course/week-3.md#assignment-1-data-management)
+#### Features
 
-#### Tuesday 9 May
-**Talk subjects:** Not ignoring the UI-Stack! [(slides)](). Usability, feedback, feedforward etc. in real-time web apps, (case study) postNL loader and FAQ.
-**Day assignment:** [(assignment)](./course/week-3.md#assignment-2-user-testing)
+- User
+   - Register
+   - Login
+- Chat
+   - Create Room with Name
+   - Live Whiteboard
+   - Messages - Send/Receive
 
-#### Friday 12 May
-We will have a final [peer review session](./course/peer-review.md). You will read, comment and fire issues on each others code. Doing this helps others dotting the i’s on their project.
+#### File Structure
 
-| Time | Who | Activity |
-|:--|:--|:--|
-| 14.00 | Tribe *+(Shyanta \|\| Justus)* | Peer review |
-| 15.30 | Tribe *+(Shyanta \|\| Justus)* | Finalize your assignment |
-| 16.00 | Tribe *+(Shyanta \|\| Justus)* | (drinks?!) |
+```zsh
+.
+├── public
+│   └── vite.svg
+├── server //server
+│   ├── config.js
+│   ├── controllers
+│   │   ├── Room.js
+│   │   └── authController.js
+│   ├── models // Database Models
+│   │   ├── Message.js
+│   │   ├── Room.js
+│   │   └── User.js
+│   ├── server.js
+│   ├── sessionStore.js
+│   └── utils.js
+├── src // client
+│   ├── app.js
+│   ├── components
+│   │   ├── Chat.js
+│   │   ├── Header.js
+│   │   ├── Messages.js
+│   │   ├── WhiteBoard.js
+│   │   ├── modal.js
+│   │   └── sockets
+│   │       └── receiceMessage.js
+│   ├── css
+│   │   ├── chat.scss
+│   │   ├── draw.scss
+│   │   ├── main.css
+│   │   ├── modal.css
+│   │   └── reset.css
+│   ├── helpers
+│   │   ├── variables.js
+│   │   └── verifyUser.js
+│   ├── socket.js
+│   └── state.js
+├──	vite.config.js
+├── LICENSE
+├── README.md
+├── index.html
+├── jsconfig.json
+├── package.json
+└── pnpm-lock.yaml
+```
 
-<!-- Here are some hints for your projects Readme.md! -->
+# Sockets & Data
 
-<!-- Start out with a title and a description -->
+## (Proof of) Concept
 
-<!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
+#### Database Models
 
-<!-- Add a link to your live demo in Github Pages 🌐-->
+- [`User.js`](server/models/Room.js)
+- [`Room.js`](server/models/Room.js)
+- [`Messages.js`](server/models/Message.js)
 
-<!-- replace the code in the /docs folder with your own, so you can showcase your work with GitHub Pages 🌍 -->
+Express Database
 
-<!-- Maybe a table of contents here? 📚 -->
+Username → Email Error
 
-<!-- ☝️ replace this description with a description of your own work -->
+# Dealing with Multiple Users
 
-<!-- How about a section that describes how to install this project? 🤓 -->
+## Data Management
 
-<!-- ...but how does one use this project? What are its features 🤔 -->
+`<li class='message alert'>Please Select or Create a room to chat in</li>`
 
-<!-- What external data source is featured in your project and what are its properties 🌠 -->
+## User Testing
 
-<!-- This would be a good place for your data life cycle ♻️-->
 
-<!-- Maybe a checklist of done stuff and stuff still on your wishlist? ✅ -->
 
-<!-- We all stand on the shoulders of giants, please link all the sources you used in to create this project. -->
+# Resources
 
-<!-- How about a license here? When in doubt use MIT. 📜  -->
 
+- [GitHub - cmda-minor-web/real-time-web-2223: During this course you will learn how to build a real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.](https://github.com/cmda-minor-web/real-time-web-2223)
+- [Get started | Socket.IO](https://socket.io/get-started/chat)
+- [How to create a web component with vanilla JS](https://gomakethings.com/how-to-create-a-web-component-with-vanilla-js/)
+- [Reactive UI's with VanillaJS - Part 2: Class Based Components](https://css-tricks.com/reactive-uis-vanillajs-part-2-class-based-components/)
+- [Adapter](https://socket.io/docs/v4/adapter/)
+- [Build a Chat Room With Socket.io and Express](https://hackernoon.com/build-a-chat-room-with-socketio-and-express)
+- [Template literals (Template strings) - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+- [Adding State to Custom HTML Elements](https://itnext.io/adding-state-to-custom-html-elements-639961c7c529)
+- [chat-example/index.js at master · socketio/chat-example](https://github.com/socketio/chat-example/blob/master/index.js)
+- [socket.io/index.js at master · socketio/socket.io](https://github.com/socketio/socket.io/blob/master/examples/passport-example/index.js)
+- [How to make web component to redender specific elements upon property update](https://stackoverflow.com/questions/74391457/how-to-make-web-component-to-redender-specific-elements-upon-property-update)
+- [Adding State to Custom HTML Elements](https://itnext.io/adding-state-to-custom-html-elements-639961c7c529)
+- [Adding State to Custom HTML Elements](https://itnext.io/adding-state-to-custom-html-elements-639961c7c529)
+- [Create a drawing app using JavaScript and canvas](https://dev.to/javascriptacademy/create-a-drawing-app-using-javascript-and-canvas-2an1)
+### State
+
+- [Dead simple State Management in Vanilla JS](https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439)
+
+### Custom Elements
+
+- [Using custom elements - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)
 
