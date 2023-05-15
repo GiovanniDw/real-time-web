@@ -1,7 +1,7 @@
 import socket from '@/socket.js';
 import '@/css/draw.scss';
-import { addObserver, getState, setState } from '@/state.js';
-import { $, app } from '@/helpers/variables';
+import { getState, setState } from '@/state.js';
+
 class WhiteBoard extends HTMLElement {
   constructor() {
     super();
@@ -136,10 +136,17 @@ class WhiteBoard extends HTMLElement {
     }
 
     function onResize() {
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-      canvas.style.width = canvas.width;
-      canvas.style.height = canvas.height;
+      // canvas.width = rect.width;
+      // canvas.height = rect.height;
+
+      const canvasOffsetX = canvas.offsetLeft;
+      const canvasOffsetY = canvas.offsetTop;
+      
+
+      canvas.width = window.innerWidth - canvasOffsetX;
+canvas.height = window.innerHeight - canvasOffsetY;
+      // canvas.width = canvas.canvasOffsetX;
+      // canvas.height = canvas.canvasOffsetY;
     }
     function drawLine(x0, y0, x1, y1, color, emit) {
       context.beginPath();

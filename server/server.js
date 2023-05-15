@@ -10,13 +10,12 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import * as socketioJwt from 'socketio-jwt';
 import { register, login, logout, verifyuser } from './controllers/authController.js';
-import User from './models/User.js';
+
 import Room from './models/Room.js';
 import Message from './models/Message.js';
 import { addUser, getUser, removeUser } from './utils.js';
-import { config, mongooseMiddleware } from './config.js';
+
 const upload = multer();
 dotenv.config();
 

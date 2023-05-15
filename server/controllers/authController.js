@@ -1,6 +1,5 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import socketjwt from 'socketio-jwt';
 const maxAge = 24 * 60 * 60;
 
 const createJWT = (id) => {

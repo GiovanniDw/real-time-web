@@ -1,7 +1,7 @@
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
-import {Strategy as LocalStrategy} from 'passport-local';
+
 // import LocalStrategy from 'passport-local-mongoose';
 
 import User from './models/User.js';

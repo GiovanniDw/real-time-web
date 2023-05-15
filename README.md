@@ -1,10 +1,9 @@
 
 # Real Time Web
 
-## Table of Contents
+**Table of Contents**
 
 - [Real Time Web](#real-time-web)
-  - [Table of Contents](#table-of-contents)
 - [Course Info](#course-info)
   - [Assignment](#assignment)
     - [Goals](#goals)
@@ -186,7 +185,7 @@ module.exports = {
 
 #### Database Models
 
-- [`User.js`](server/models/Room.js)
+- [`User.js`](server/models/User.js)
 - [`Room.js`](server/models/Room.js)
 - [`Messages.js`](server/models/Message.js)
 

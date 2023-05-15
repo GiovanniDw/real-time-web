@@ -3,7 +3,7 @@ import { $, $this } from '@/helpers/variables.js';
 import verifyUser from '@/helpers/verifyUser';
 import socket from '@/socket.js';
 import { getState, setState } from '@/state.js';
-import { get } from 'mongoose';
+import '@/css/modal.css';
 
 class Header extends HTMLElement {
   constructor() {
@@ -150,6 +150,8 @@ class Header extends HTMLElement {
       }
     });
 
+
+    
     logoutBtn.style.display = 'none';
     btn.onclick = function () {
       modal.style.display = 'block';

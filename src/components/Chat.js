@@ -5,10 +5,9 @@ import '@/css/chat.scss';
 
 
 import { $, $$ } from '@/helpers/variables';
-import { LoginModal, modalTemplate } from '@/components/modal';
+// import { LoginModal, modalTemplate } from '@/components/modal';
 import { addObserver, getState, setState } from '@/state.js';
 import { receiveMessage } from '@/components/sockets/receiceMessage';
-import WhiteBoard from './WhiteBoard';
 
 class ChatComponent extends HTMLElement {
   constructor() {

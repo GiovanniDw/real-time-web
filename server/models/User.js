@@ -1,8 +1,7 @@
-import mongoose, { SchemaTypes } from 'mongoose';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import passportLocalMongoose from 'passport-local-mongoose';
 import bcrypt from 'bcrypt';
-import { createLogger } from 'vite';
+
 
 const UserSchema = new Schema({
   id: Number,
