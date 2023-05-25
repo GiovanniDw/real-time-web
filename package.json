@@ -10,10 +10,10 @@
   "scripts": {
     "dev": "nodemon --inspect server/server.js -w server/",
     "start": "NODE_ENV=production node server/server.js",
-    "build": "npm run build:server && npm run build:client",
+    "build": "pnpm build:server && pnpm build:client",
     "preview": "vite preview",
-    "build:client": "vite build --outDir docs/client --ssrManifest",
-    "build:server": "vite build --outDir docs/server --ssr server/server.js",
+    "build:client": "vite build --ssrManifest",
+    "build:server": "vite build --ssr server/server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },

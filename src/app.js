@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
+import 'vite/modulepreload-polyfill'
 import '@/css/reset.css';
 import '@/css/main.css';
+
 // import { html, render } from 'lit-html';
 // import { io } from "socket.io-client";
 

@@ -39,11 +39,6 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
 });
-const createJWT = (id) => {
-  return jwt.sign({ id }, 'chatroom secret', {
-    expiresIn: maxAge, // in token expiration, calculate by second
-  });
-};
 
 const server = http.createServer(app).listen(PORT, () => {
   console.log(`Server is listeningon ${PORT}!`);
@@ -56,6 +51,7 @@ const io = new Server(server, {
   },
 });
 
+app.set('trust proxy', 'loopback')
 app.use(cors(CorsOptions));
 // app.use(sessionMiddleware);
 app.use(cookieParser());
@@ -78,8 +74,6 @@ app.post('/login', login);
 app.post('/register', register);
 app.get('/verifyuser', verifyuser);
 app.post('/verifyuser', verifyuser);
-
-
 
 app.get('/logout', logout);
 app.post('/logout', logout);
@@ -145,7 +139,6 @@ io.on('connection', (socket) => {
     });
 
     message.save().then((result) => {
-      console.log(result)
       io.to(room_id).emit('receive-message', result);
     });
   });
@@ -160,7 +153,6 @@ io.on('connection', (socket) => {
 
   socket.on('get-messages-history', room_id => {
     Message.find({ room_id }).then(result => {
-      console.log(result)
         socket.emit('output-message', result)
     })
 })

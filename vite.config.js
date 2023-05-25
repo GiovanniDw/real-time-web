@@ -5,19 +5,21 @@ import commonjs from '@rollup/plugin-commonjs';
 
 
 export default defineConfig({
-  appType: 'mpa',
-  base: "./",
+  appType: 'custom',
+  base: "/",
   plugins: [commonjs()],
   optimizeDeps: {},
-  publicDir: '/public',
+  publicDir: './public',
   build: {
+    assetsDir: 'public',
+    outDir: 'build',
     // generate manifest.json in outDir
     manifest: true,
     rollupOptions: {
       // overwrite default .html entry
-      input: '/public/index.html',
+      input: './public/index.html',
     },
-    outDir: 'docs'
+    
   },
   css: {
     modules: {
