@@ -13,6 +13,7 @@ export default defineConfig({
   build: {
     assetsDir: 'assets',
     outDir: 'docs',
+    minify: false,
     // generate manifest.json in outDir
     manifest: true,
     rollupOptions: {

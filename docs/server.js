@@ -10,10 +10,6 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const Schema$2 = mongoose.Schema;
 const UserSchema = new Schema$2({
   id: Number,
@@ -196,7 +192,7 @@ const PORT = process.env.PORT || 3e3;
 process.env.SESSION_SECRET;
 const app = express();
 const CorsOptions = {
-  origin: "real-time-web-production-3215.up.railway.app",
+  origin: "https://real-time-web-production-3215.up.railway.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "*",
   exposedHeaders: "*",
@@ -213,7 +209,7 @@ const server = http.createServer(app).listen(PORT, "0.0.0.0", () => {
 });
 const io = new Server(server, {
   cors: {
-    origin: "real-time-web-production-3215.up.railway.app",
+    origin: "https://real-time-web-production-3215.up.railway.app",
     methods: ["GET", "POST"]
   }
 });
@@ -223,7 +219,6 @@ app.use(cookieParser());
 app.options("*", cors(CorsOptions));
 app.use(express.json());
 app.use("/", express.static("public"));
-app.use('/assets', express.static('assets'));
 mongoose.connect(process.env.MONGO_DB, {
   dbName: process.env.DB_NAME,
   useNewUrlParser: true,
@@ -237,10 +232,6 @@ app.get("/verifyuser", verifyuser);
 app.post("/verifyuser", verifyuser);
 app.get("/logout", logout);
 app.post("/logout", logout);
-app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
-});
-
 io.on("connection", (socket) => {
   console.log("user connected");
   console.log("session");
@@ -317,7 +308,4 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-
-io.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-})
+ViteExpress.bind(app, io);

@@ -26,7 +26,7 @@ const maxAge = 24 * 60 * 60;
 const app = express();
 
 const CorsOptions = {
-  origin: 'http://localhost:5173',
+  origin: 'https://real-time-web-production-3215.up.railway.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
@@ -46,7 +46,7 @@ const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'https://real-time-web-production-3215.up.railway.app',
     methods: ['GET', 'POST'],
   },
 });
