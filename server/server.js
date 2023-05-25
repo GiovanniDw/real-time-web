@@ -40,7 +40,7 @@ const sessionMiddleware = session({
   saveUninitialized: false,
 });
 
-const server = http.createServer(app).listen(PORT, () => {
+const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
   console.log(`Server is listeningon ${PORT}!`);
 });
 
@@ -57,7 +57,9 @@ app.use(cors(CorsOptions));
 app.use(cookieParser());
 app.options('*', cors(CorsOptions));
 app.use(express.json());
-app.use(express.static('public'));
+
+app.use('/', express.static('public'));
+
 
 mongoose
   .connect(process.env.MONGO_DB, {
@@ -78,6 +80,7 @@ app.post('/verifyuser', verifyuser);
 app.get('/logout', logout);
 app.post('/logout', logout);
 
+// app.use(ViteExpress.static('public'));
 
 io.on('connection', (socket) => {
 

@@ -7,13 +7,11 @@
   "type": "module",
   "packageManager": "pnpm@8.5.1",
   "engines.node": "18",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon --inspect server/server.js -w server/",
-    "start": "NODE_ENV=production node server/server.js",
-    "build": "pnpm build:server && pnpm build:client",
+    "start": "NODE_ENV=production node server.js",
     "preview": "vite preview",
-    "build:server": "vite build --ssr server/server.js",
-    "build:client": "vite build --emptyOutDir false --ssrManifest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },

@@ -2,7 +2,7 @@ import socket from '@/socket.js';
 import '@/css/draw.scss';
 import { getState, setState } from '@/state.js';
 
-class WhiteBoard extends HTMLElement {
+class DrawComponent extends HTMLElement {
   constructor() {
     super();
 
@@ -202,4 +202,4 @@ canvas.height = window.innerHeight - canvasOffsetY;
   }
 }
 
-export default WhiteBoard;
+export default DrawComponent;

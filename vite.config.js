@@ -6,27 +6,23 @@ import commonjs from '@rollup/plugin-commonjs';
 
 export default defineConfig({
   appType: 'custom',
-  base: "/",
+  base: "./",
   plugins: [commonjs()],
   optimizeDeps: {},
   publicDir: './public',
   build: {
-    assetsDir: 'public',
-    outDir: 'build',
+    assetsDir: 'assets',
+    outDir: 'docs',
     // generate manifest.json in outDir
     manifest: true,
     rollupOptions: {
       // overwrite default .html entry
       input: './public/index.html',
     },
-    
   },
   css: {
     modules: {
       scopeBehaviour: 'local',
-    },
-    postcss: {
-
     },
     devSourcemap: true
   },
@@ -41,6 +37,9 @@ export default defineConfig({
       },
     },
     hmr: true,
+  },
+  ssr: {
+    target: "node"
   },
   hmr: {
     clientPort: 5173

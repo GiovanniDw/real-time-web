@@ -204,7 +204,7 @@ session({
   resave: false,
   saveUninitialized: false
 });
-const server = http.createServer(app).listen(PORT, () => {
+const server = http.createServer(app).listen(PORT, "0.0.0.0", () => {
   console.log(`Server is listeningon ${PORT}!`);
 });
 const io = new Server(server, {
@@ -213,11 +213,13 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 });
+app.set("trust proxy", "loopback");
 app.use(cors(CorsOptions));
 app.use(cookieParser());
 app.options("*", cors(CorsOptions));
 app.use(express.json());
-app.use(express.static("public"));
+app.use("/", express.static("public"));
+app.use('/assets', express.static('assets'));
 mongoose.connect(process.env.MONGO_DB, {
   dbName: process.env.DB_NAME,
   useNewUrlParser: true,
@@ -283,17 +285,16 @@ io.on("connection", (socket) => {
       alert
     });
     message.save().then((result) => {
-      console.log(result);
       io.to(room_id).emit("receive-message", result);
     });
   });
   socket.on("drawing", (data) => {
     console.log(data);
-    io.to(data.room_id).emit("drawing", data);
+    socket.broadcast.emit("drawing", data);
+    socket.emit("drawing", data);
   });
   socket.on("get-messages-history", (room_id) => {
     Message.find({ room_id }).then((result) => {
-      console.log(result);
       socket.emit("output-message", result);
     });
   });

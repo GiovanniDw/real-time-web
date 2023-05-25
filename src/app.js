@@ -11,7 +11,7 @@ import { $, $$, app, html } from '@/helpers/variables';
 // import { renderHeader, header } from '@/components/Header.js';
 import ChatComponent from '@/components/Chat.js';
 import Header from '@/components/Header.js';
-import WhiteBoard from '@/components/WhiteBoard.js';
+import DrawComponent from '@/components/DrawComponent.js';
 // import loginModal, { modalTemplate } from '@/components/modal.js';
 import socket from '@/socket.js';
 import { receiveMessage } from './components/sockets/receiceMessage';
@@ -34,7 +34,7 @@ app.innerHTML = App();
 if ('customElements' in window) {
   customElements.define('header-component', Header);
   customElements.define('chat-component', ChatComponent);
-  customElements.define('draw-component', WhiteBoard);
+  customElements.define('draw-component', DrawComponent);
 }
 
 socket.onAny((event, ...args) => {

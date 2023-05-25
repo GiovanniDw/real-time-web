@@ -1,0 +1,14 @@
+{
+  "public/index.css": {
+    "file": "assets/index-444649fe.css",
+    "src": "public/index.css"
+  },
+  "public/index.html": {
+    "css": [
+      "assets/index-444649fe.css"
+    ],
+    "file": "assets/index-a3fadac8.js",
+    "isEntry": true,
+    "src": "public/index.html"
+  }
+}
