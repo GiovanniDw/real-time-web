@@ -317,4 +317,7 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-ViteExpress.bind(app, io);
+
+io.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+})
