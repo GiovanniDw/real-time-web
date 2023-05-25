@@ -317,7 +317,3 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-
-io.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-})
