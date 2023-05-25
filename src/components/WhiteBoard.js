@@ -85,7 +85,7 @@ class WhiteBoard extends HTMLElement {
         return;
       }
       drawing = false;
-      drawLine(current.x, current.y, e.clientX || 0, e.clientY || 0, current.color, true);
+      drawLine(current.x, current.y, e.clientX || 0, e.clientY || 0, current.color, false);
     }
 
     function onMouseMove(e) {
@@ -130,9 +130,10 @@ class WhiteBoard extends HTMLElement {
     }
 
     function onDrawingEvent(data) {
+      console.log(data)
       let w = canvas.width;
       let h = canvas.height;
-      drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+      drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color, false);
     }
 
     function onResize() {

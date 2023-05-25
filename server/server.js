@@ -125,6 +125,7 @@ io.on('connection', (socket) => {
     const user = getUser(socket.id);
     console.log(msg);
     console.log(alert);
+    console.log(user);
     // socket.emit('receive-message', msg);
 
     const msgToStore = {
@@ -152,8 +153,9 @@ io.on('connection', (socket) => {
   socket.on('drawing', (data) => {
     console.log(data)
 
-    io.to(data.room_id).emit('drawing', data)
-    // socket.broadcast.emit('drawing', data)
+    // io.to(data.room_id).emit('drawing', data)
+    socket.broadcast.emit('drawing', data)
+    socket.emit('drawing', data)
   });
 
   socket.on('get-messages-history', room_id => {
