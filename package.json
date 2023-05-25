@@ -1,14 +1,18 @@
 {
   "name": "real-time-web",
   "private": true,
+  "description": "Real Time Web Chat App",
+  "repository": "https://github.com/GiovanniDw/real-time-web.git",
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@8.5.1",
+  "engines.node": "18",
   "scripts": {
     "dev": "nodemon --inspect server/server.js -w server/",
     "start": "NODE_ENV=production node server/server.js",
     "build": "npm run build:server && npm run build:client",
     "preview": "vite preview",
-    "build:client": "vite build --outDir docs/client",
+    "build:client": "vite build --outDir docs/client --ssrManifest",
     "build:server": "vite build --outDir docs/server --ssr server/server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"

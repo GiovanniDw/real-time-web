@@ -10,6 +10,15 @@ export default defineConfig({
   plugins: [commonjs()],
   optimizeDeps: {},
   publicDir: '/public',
+  build: {
+    // generate manifest.json in outDir
+    manifest: true,
+    rollupOptions: {
+      // overwrite default .html entry
+      input: '/public/index.html',
+    },
+    outDir: 'docs'
+  },
   css: {
     modules: {
       scopeBehaviour: 'local',

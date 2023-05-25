@@ -266,6 +266,7 @@ io.on("connection", (socket) => {
     const user = getUser(socket.id);
     console.log(msg);
     console.log(alert);
+    console.log(user);
     const msgToStore = {
       name: user.name,
       user_id: user.user_id,
