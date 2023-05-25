@@ -10,6 +10,10 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const Schema$2 = mongoose.Schema;
 const UserSchema = new Schema$2({
   id: Number,
@@ -233,6 +237,10 @@ app.get("/verifyuser", verifyuser);
 app.post("/verifyuser", verifyuser);
 app.get("/logout", logout);
 app.post("/logout", logout);
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'))
+});
+
 io.on("connection", (socket) => {
   console.log("user connected");
   console.log("session");
