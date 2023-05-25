@@ -210,6 +210,13 @@ session({
 });
 const server = http.createServer(app).listen(PORT, "0.0.0.0", () => {
   console.log(`Server is listeningon ${PORT}!`);
+  mongoose.connect(process.env.MONGO_DB, {
+    dbName: process.env.DB_NAME,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).then(() => console.log("Mongoose connected")).catch((err) => console.log(err));
+
+
 });
 const io = new Server(server, {
   cors: {
@@ -224,11 +231,6 @@ app.options("*", cors(CorsOptions));
 app.use(express.json());
 app.use("/", express.static("public"));
 app.use('/assets', express.static('assets'));
-mongoose.connect(process.env.MONGO_DB, {
-  dbName: process.env.DB_NAME,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log("Mongoose connected")).catch((err) => console.log(err));
 app.get("/login", login);
 app.get("/register", register);
 app.post("/login", login);
