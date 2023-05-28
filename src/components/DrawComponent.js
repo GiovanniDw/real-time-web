@@ -33,7 +33,7 @@ class DrawComponent extends HTMLElement {
     const dpr = window.devicePixelRatio;
     console.log(dpr)
     const drawComponent = this.querySelector('#draw-component');
-    const canvasContainer = this.querySelector('#draw-container');
+    const drawContainer = this.querySelector('#draw-container');
 
     const canvas = this.querySelector('#whiteboard');
     let rect = canvas.getBoundingClientRect();
@@ -54,6 +54,10 @@ class DrawComponent extends HTMLElement {
 
     console.log('color');
     console.log(current);
+
+    onResize();
+    window.addEventListener('resize', onResize, true);
+
     canvas.addEventListener('mousedown', onMouseDown, false);
     canvas.addEventListener('mouseup', onMouseUp, false);
     canvas.addEventListener('mouseout', onMouseUp, false);
@@ -67,8 +71,8 @@ class DrawComponent extends HTMLElement {
 
     socket.on('drawing', onDrawingEvent);
 
-    window.addEventListener('resize', onResize, true);
-    onResize();
+    
+    
 
     colorPicker.addEventListener('change', watchColorPicker, false);
 
@@ -81,6 +85,7 @@ class DrawComponent extends HTMLElement {
     }
 
     function onMouseUp(e) {
+      const { current } = getState();
       if (!drawing) {
         return;
       }
@@ -90,7 +95,7 @@ class DrawComponent extends HTMLElement {
 
     function onMouseMove(e) {
       const { current } = getState();
-      console.log(current.x)
+
       if (!drawing) {
         return;
       }
@@ -130,6 +135,8 @@ class DrawComponent extends HTMLElement {
     }
 
     function onDrawingEvent(data) {
+      const containerWidth = drawContainer.clientWidth;
+      const containerHeight = drawContainer.clientHeight;
       console.log(data)
       let w = canvas.width;
       let h = canvas.height;
@@ -139,13 +146,15 @@ class DrawComponent extends HTMLElement {
     function onResize() {
       // canvas.width = rect.width;
       // canvas.height = rect.height;
-
+      const containerWidth = drawContainer.clientWidth;
+      const containerHeight = drawContainer.clientHeight;
       const canvasOffsetX = canvas.offsetLeft;
       const canvasOffsetY = canvas.offsetTop;
       
-
-      canvas.width = window.innerWidth - canvasOffsetX;
-canvas.height = window.innerHeight - canvasOffsetY;
+      canvas.width = containerWidth;
+      canvas.height = containerHeight;
+      // canvas.width = window.innerWidth - canvasOffsetX;
+// canvas.height = window.innerHeight - canvasOffsetY;
       // canvas.width = canvas.canvasOffsetX;
       // canvas.height = canvas.canvasOffsetY;
     }
@@ -154,10 +163,10 @@ canvas.height = window.innerHeight - canvasOffsetY;
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
       context.strokeStyle = color;
-      context.lineWidth = 2;
+      context.lineWidth = 1;
       context.stroke();
       context.closePath();
-      context.textAlign = 'center'
+      // context.textAlign = 'center'
 
       console.log(context)
 
